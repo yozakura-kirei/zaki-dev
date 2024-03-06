@@ -14,11 +14,15 @@ export default function Page({name}: {name: string}) {
 
 export async function getServerSideProps() {
   const res = await fetch(`${process.env.APP_ENDPONT}/api/hello`)
+  console.log(res)
   let response;
-  if (res.ok) {
-    response = await res.json();
-    console.log("レスポンスOK", response)
-  } else {
+  try {
+    if (res.ok) {
+      response = await res.json();
+      console.log("レスポンスOK", response)
+    } 
+  } catch(err) {
+    console.error("why error...", err)
     response = { name: "Api call Error..."}
   }
 
