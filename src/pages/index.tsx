@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -14,12 +15,8 @@ export default function Page({ name }: { name: string }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.APP_ENDPONT}/api/hello`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  });
+  console.log(process.env.APP_ENDPONT);
+  const res = await fetch(`${process.env.APP_ENDPONT}/api/hello`);
   console.log(res);
   let response;
   try {
