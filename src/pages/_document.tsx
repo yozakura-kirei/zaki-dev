@@ -8,7 +8,7 @@ export default function Document() {
       <Head>
         <title>Zaki-dev</title>
       </Head>
-      <body>
+      <body className='font-Basic text-Basic'>
         <Header />
         <div className='w-full h-screen'>
           <Main />
