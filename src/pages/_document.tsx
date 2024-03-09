@@ -10,7 +10,7 @@ export default function Document() {
       </Head>
       <body className='font-Basic text-Basic'>
         <Header />
-        <div className='w-full h-screen'>
+        <div className='w-full h-screen bg-BackGrund'>
           <Main />
         </div>
         <Footer />

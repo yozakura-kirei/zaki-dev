@@ -8,8 +8,8 @@ export async function getCategoriesSQL() {
   const connection = await mysqlClient();
 
   const response = {
-    count: 0,
-    results: [],
+    categoriesCount: 0,
+    categories: [],
   };
 
   try {
@@ -17,8 +17,8 @@ export async function getCategoriesSQL() {
       'カテゴリなし',
     ]);
     console.log(connection.format(SQL.getCategories), 'params', 'カテゴリなし');
-    response.count = results.length;
-    response.results = results;
+    response.categoriesCount = results.length;
+    response.categories = results;
   } catch (err) {
     console.error('getCategories error...', err);
   } finally {
