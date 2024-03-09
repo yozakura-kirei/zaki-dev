@@ -13,7 +13,6 @@ export default function Document() {
         <div className='w-full h-screen bg-BackGrund'>
           <Main />
         </div>
-        <Footer />
         <NextScript />
       </body>
     </Html>

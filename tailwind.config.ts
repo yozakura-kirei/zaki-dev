@@ -15,6 +15,9 @@ const config: Config = {
         BorderGray: '#d4d4d4',
         HoverBlue: '#2563eb',
         HoverGray: '#a3a3a3',
+        // BgNeutral: '#F3EEE5',
+        BgNeutral: '#f3eee6',
+        CardText: '#404040',
       },
       fontFamily: {
         Basic: [

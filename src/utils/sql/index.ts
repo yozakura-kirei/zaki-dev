@@ -14,4 +14,20 @@ export const SQL = {
     LEFT JOIN m_category_notices mcn on mcn.id = t_n.m_category_notices_id \
     ORDER BY t_n.created_at DESC \
     LIMIT ?;',
+  // 記事を取得
+  getArticles: `SELECT \
+    ta.id, \
+    ta.article_id, \
+    ta.title, \
+    ta.content, \
+    ta.is_fixed, \
+    GROUP_CONCAT(mc.name) AS category_name, \
+    ta.created_at, \
+    ta.updated_at  \
+    FROM i_articles_categories iac \
+    LEFT JOIN t_articles ta on ta.id = iac.t_articles_id \
+    LEFT JOIN m_categories mc on mc.id = iac.m_categories_id \
+    WHERE ta.deleted_at IS NULL \
+    GROUP BY iac.t_articles_id \
+    ORDER BY MAX(ta.created_at) DESC LIMIT ?;`,
 };

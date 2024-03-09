@@ -10,6 +10,8 @@ interface TopPageProps {
   notices: API_RES_TYPE['notices'][];
   categoriesCount: number;
   categories: API_RES_TYPE['categories'][];
+  articlesCount: number;
+  articles: API_RES_TYPE['articles'][];
 }
 
 export default function Page({
@@ -17,6 +19,8 @@ export default function Page({
   notices,
   categoriesCount,
   categories,
+  articlesCount,
+  articles,
 }: TopPageProps) {
   return (
     <PageWrapper>
@@ -39,8 +43,9 @@ export default function Page({
                 className='border-b-[0.8px] border-BorderGray mb-4 cursor-pointer hover:text-HoverGray'
               >
                 <p className='text-neutral-500 text-[0.7rem]'>
-                  {unixYMD(notice.updated_at as number) ??
-                    unixYMD(notice.created_at)}
+                  {notice.updated_at
+                    ? unixYMD(notice.updated_at as number)
+                    : unixYMD(notice.created_at)}
                 </p>
                 <p className='font-medium'>・{notice.title}</p>
               </div>
@@ -50,7 +55,7 @@ export default function Page({
           )}
         </div>
         {/* カテゴリエリア */}
-        <div className=''>
+        <div className='my-4'>
           <h2 className='font-bold text-[1.4rem]'>カテゴリー</h2>
           <div className='flex flex-wrap gap-4 my-4'>
             {categoriesCount > 0 &&
@@ -67,7 +72,39 @@ export default function Page({
         </div>
         {/* 記事エリア */}
         <div className=''>
-          <h2 className='font-bold text-[1.4rem]'>新着記事</h2>
+          <div className='flex justify-between items-center mb-4'>
+            <h2 className='font-bold text-[1.4rem] mb-4'>新着記事</h2>
+            <Link
+              href={PATH.ARTICLES}
+              className='flex items-center gap-1 text-[0.9rem] hover:text-HoverBlue'
+            >
+              <FaAnglesRight />
+              <p>もっと見る</p>
+            </Link>
+          </div>
+          {articlesCount > 0 ? (
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>
+              <>
+                {articles.map((article) => (
+                  <section
+                    key={article.id}
+                    className='cursor-pointer hover:opacity-80 hover:transition-all text-[1.1rem] hover:text-[1.2rem]'
+                  >
+                    <div className='bg-BgNeutral p-4 rounded-2xl hover:shadow-md h-[10rem] flex justify-center items-center font-bold'>
+                      <h3 className='text-CardText'>{article.title}</h3>
+                    </div>
+                    <p className='text-neutral-500 text-[0.9rem] text-right mt-2'>
+                      {article.updated_at
+                        ? unixYMD(article.updated_at)
+                        : unixYMD(article.created_at)}
+                    </p>
+                  </section>
+                ))}
+              </>
+            </div>
+          ) : (
+            <p>記事を取得できませんでした</p>
+          )}
         </div>
       </div>
     </PageWrapper>
@@ -80,6 +117,8 @@ export async function getServerSideProps() {
     notices: [],
     categoriesCount: 0,
     categories: [],
+    articlesCount: 0,
+    articles: [],
   };
 
   try {
@@ -97,6 +136,14 @@ export async function getServerSideProps() {
       const { categoriesCount, categories } = await categoriesRes.json();
       response.categoriesCount = categoriesCount;
       response.categories = categories;
+    }
+
+    // 記事を取得
+    const articlesRes = await fetch(`${API.ARTICLES}=10`);
+    if (articlesRes.ok) {
+      const { articlesCount, articles } = await articlesRes.json();
+      response.articlesCount = articlesCount;
+      response.articles = articles;
     }
   } catch (err) {
     console.error('Top Page server error...', err);

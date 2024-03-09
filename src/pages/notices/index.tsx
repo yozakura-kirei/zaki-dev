@@ -16,14 +16,14 @@ export default function Page({ noticesCount, notices }: NoticesPageProps) {
   return (
     <PageWrapper>
       <div>
-        <h2 className='font-bold text-[1.4rem] mb-6'>お知らせ</h2>
+        <h2 className='font-bold text-[1.4rem] mb-8'>お知らせ</h2>
         {noticesCount > 0 ? (
           notices.map((notice) => (
             <div
               key={notice.id}
               className='border-b-[0.8px] border-BorderGray mb-4 cursor-pointer'
             >
-              <p className='text-neutral-500 text-[0.7rem]'>
+              <p className='text-neutral-500 text-[0.7rem] mt-2'>
                 {unixYMD(notice.updated_at as number) ??
                   unixYMD(notice.created_at)}
               </p>
