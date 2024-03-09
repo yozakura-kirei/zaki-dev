@@ -6,8 +6,8 @@ export default async function getCategories(
   res: NextApiResponse,
 ) {
   try {
-    const response = await getCategoriesSQL();
-    res.status(200).json(response);
+    const categories = await getCategoriesSQL();
+    res.status(200).json(categories);
   } catch (err) {
     res.status(500).json(err);
   }
