@@ -1,6 +1,11 @@
 import { mysqlClient } from '@/libs/client';
 import { SQL } from '@/utils/sql';
 
+/**
+ * お知らせを取得する
+ * @param limit お知らせ取得件数
+ * @returns
+ */
 export async function getNoticeSQL(limit: number) {
   const connection = await mysqlClient();
 

@@ -16,4 +16,14 @@ export interface API_RES_TYPE {
     name: string;
     count: number;
   };
+  articles: {
+    id: number;
+    article_id: string;
+    title: string;
+    content: string;
+    is_fixed: boolean;
+    category_name: string;
+    created_at: number;
+    updated_at: number;
+  };
 }
