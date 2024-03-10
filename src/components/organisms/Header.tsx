@@ -1,4 +1,5 @@
 import { PATH } from '@/utils/common/path';
+import { SiteName } from '@/utils/common/site';
 import Link from 'next/link';
 import { CiSearch } from 'react-icons/ci';
 import { PiContactlessPaymentLight } from 'react-icons/pi';
@@ -9,7 +10,7 @@ export default function Header() {
       <div className='max-w-[1024px] m-auto grid grid-cols-2 gap-4'>
         <div className='font-bold text-[1.5rem]'>
           <h1>
-            <Link href={PATH.ROOT}>Zaki-dev</Link>
+            <Link href={PATH.ROOT}>{SiteName}</Link>
           </h1>
         </div>
         <ul className='flex items-center justify-end'>
