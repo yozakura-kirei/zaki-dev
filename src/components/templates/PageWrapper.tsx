@@ -1,15 +1,22 @@
 import { ReactNode } from 'react';
-import Footer from '../organisms/Footer';
 
 interface PageWrapperProps {
   children: ReactNode;
+  isGrid: boolean;
 }
 
-export default function PageWrapper({ children }: PageWrapperProps) {
+export default function PageWrapper({ children, isGrid }: PageWrapperProps) {
   return (
     <>
-      <main className='mt-[4rem] max-w-[1024px] m-auto p-6'>{children}</main>
-      <Footer />
+      {isGrid ? (
+        <main className='mt-[4rem] max-w-[1024px] m-auto px-6 pt-6 pb-[5rem] bg-BackGround'>
+          {children}
+        </main>
+      ) : (
+        <main className='mt-[4rem] max-w-[1024px] m-auto p-6 h-screen bg-BackGround'>
+          {children}
+        </main>
+      )}
     </>
   );
 }

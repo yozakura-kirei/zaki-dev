@@ -30,4 +30,12 @@ export const SQL = {
     WHERE ta.deleted_at IS NULL \
     GROUP BY iac.t_articles_id \
     ORDER BY MAX(ta.created_at) DESC LIMIT ?;`,
+  // 記事の詳細を取得
+  getArticleId: `SELECT \
+    ta.id, ta.article_id, ta.title, ta.content, ta.is_fixed, GROUP_CONCAT(mc.name) as category_name, ta.created_at, ta.updated_at \
+    FROM i_articles_categories iac \
+    LEFT JOIN t_articles ta ON ta.id = iac.t_articles_id \
+    LEFT JOIN m_categories mc ON mc.id = iac.m_categories_id \
+    WHERE ta.article_id = ? \
+    GROUP BY ta.article_id LIMIT 1;`,
 };

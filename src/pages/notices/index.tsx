@@ -14,7 +14,7 @@ interface NoticesPageProps {
  */
 export default function Page({ noticesCount, notices }: NoticesPageProps) {
   return (
-    <PageWrapper>
+    <PageWrapper isGrid={false}>
       <div>
         <h2 className='font-bold text-[1.4rem] mb-8'>お知らせ</h2>
         {noticesCount > 0 ? (

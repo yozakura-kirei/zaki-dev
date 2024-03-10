@@ -14,6 +14,11 @@ interface TopPageProps {
   articles: API_RES_TYPE['articles'][];
 }
 
+/**
+ * トップページ
+ * @param param0
+ * @returns
+ */
 export default function Page({
   noticesCount,
   notices,
@@ -23,7 +28,7 @@ export default function Page({
   articles,
 }: TopPageProps) {
   return (
-    <PageWrapper>
+    <PageWrapper isGrid={true}>
       <div className='grid grid-cols-1 gap-8 mt-4'>
         <div className=''>
           <div className='flex justify-between items-center mb-4'>
@@ -86,19 +91,21 @@ export default function Page({
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>
               <>
                 {articles.map((article) => (
-                  <section
+                  <Link
                     key={article.id}
-                    className='cursor-pointer hover:opacity-80 hover:transition-all text-[1.1rem] hover:text-[1.2rem]'
+                    href={`/articles/${article.article_id}`}
                   >
-                    <div className='bg-BgNeutral p-4 rounded-2xl hover:shadow-md h-[10rem] flex justify-center items-center font-bold'>
-                      <h3 className='text-CardText'>{article.title}</h3>
-                    </div>
-                    <p className='text-neutral-500 text-[0.9rem] text-right mt-2'>
-                      {article.updated_at
-                        ? unixYMD(article.updated_at)
-                        : unixYMD(article.created_at)}
-                    </p>
-                  </section>
+                    <section className='cursor-pointer hover:opacity-80 hover:transition-all text-[1.1rem] hover:text-[1.2rem]'>
+                      <div className='bg-BgNeutral p-4 rounded-2xl hover:shadow-md h-[10rem] flex justify-center items-center font-bold'>
+                        <h3 className='text-CardText'>{article.title}</h3>
+                      </div>
+                      <p className='text-neutral-500 text-[0.9rem] text-right mt-2'>
+                        {article.updated_at
+                          ? unixYMD(article.updated_at)
+                          : unixYMD(article.created_at)}
+                      </p>
+                    </section>
+                  </Link>
                 ))}
               </>
             </div>
