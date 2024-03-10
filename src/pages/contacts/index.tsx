@@ -1,7 +1,9 @@
+import PageWrapper from '@/components/templates/PageWrapper';
+
 export default function Page() {
   return (
-    <main>
+    <PageWrapper isGrid={false}>
       <h1>コンタクトページ</h1>
-    </main>
+    </PageWrapper>
   );
 }

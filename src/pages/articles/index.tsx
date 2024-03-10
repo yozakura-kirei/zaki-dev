@@ -10,7 +10,7 @@ interface ArticlePageProps {
 
 export default function Page({ articlesCount, articles }: ArticlePageProps) {
   return (
-    <PageWrapper>
+    <PageWrapper isGrid={true}>
       <div>
         <h2 className='font-bold text-[1.4rem] mb-8'>記事一覧</h2>
       </div>
