@@ -1,4 +1,4 @@
-import { getArticlesSQL } from '@/libs/mysql/articles';
+import { selectQuery } from '@/libs/mysql';
 import { SQL } from '@/utils/sql';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -13,7 +13,7 @@ export default async function getArticles(
 ) {
   try {
     const { limit } = req.query;
-    const articles = await getArticlesSQL(
+    const articles = await selectQuery(
       SQL.getArticles,
       parseInt(limit as string),
     );

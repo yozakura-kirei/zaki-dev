@@ -4,6 +4,7 @@
 export interface API_RES_TYPE {
   notices: {
     id: number;
+    notice_id: string;
     title: string;
     is_fixed: boolean;
     content: string;

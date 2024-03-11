@@ -9,7 +9,7 @@ export const SQL = {
   ORDER BY MAX(iac.created_at) DESC LIMIT 50;',
   // お知らせを取得
   getNotices:
-    'SELECT t_n.id, t_n.title, t_n.is_fixed, t_n.content, mcn.name, t_n.created_at, t_n.updated_at \
+    'SELECT t_n.id, t_n.notice_id, t_n.title, t_n.is_fixed, t_n.content, mcn.name, t_n.created_at, t_n.updated_at \
     FROM t_notices t_n \
     LEFT JOIN m_category_notices mcn on mcn.id = t_n.m_category_notices_id \
     ORDER BY t_n.created_at DESC \
@@ -40,4 +40,5 @@ export const SQL = {
     GROUP BY ta.article_id LIMIT 1;`,
   // articleIdのみを取得
   getOnlyArticleId: `SELECT ta.article_id  FROM t_articles ta LIMIT ?;`,
+  getOnlyNoticeId: `SELECT tn.notice_id FROM t_notices tn LIMIT ?;`,
 };
