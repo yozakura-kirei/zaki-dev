@@ -1,6 +1,6 @@
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
-import { getArticlesSQL } from '@/libs/mysql/articles';
+import { selectQuery } from '@/libs/mysql';
 import { API_RES_TYPE } from '@/types/api';
 import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
@@ -18,43 +18,39 @@ export default function Page({ status, article }: ArticleIdPageProps) {
 
   return (
     <>
-      {/* {article && ( */}
-      <>
-        <MetaData
-          isTitle={false}
-          title={`${article.title}の記事`}
-          description={Description.basic}
-        />
-        <PageWrapper isGrid={false}>
-          <div>
-            <h1 className='font-bold text-[1.2rem] my-4'>{article.title}</h1>
-            {/* カテゴリボタン */}
-            {article.category_name &&
-              categories.map((category) => (
-                <button
-                  key={category}
-                  className='bg-ThinGray text-sm py-2 px-4 mr-4 rounded-xl shadow-md cursor-pointer hover:text-HoverGray'
-                >
-                  {category}
-                </button>
-              ))}
-            <p className='my-4'>
-              {article.updated_at
-                ? `${unixYMD(article.updated_at)}に更新`
-                : `${article.created_at}に公開`}
-            </p>
-            <p>{article.content}</p>
-          </div>
-        </PageWrapper>
-      </>
-      {/* )} */}
+      <MetaData
+        isTitle={false}
+        title={`${article.title}の記事`}
+        description={Description.basic}
+      />
+      <PageWrapper isGrid={false}>
+        <div>
+          <h1 className='font-bold text-[1.2rem] my-4'>{article.title}</h1>
+          {/* カテゴリボタン */}
+          {article.category_name &&
+            categories.map((category) => (
+              <button
+                key={category}
+                className='bg-ThinGray text-sm py-2 px-4 mr-4 rounded-xl shadow-md cursor-pointer hover:text-HoverGray'
+              >
+                {category}
+              </button>
+            ))}
+          <p className='my-4'>
+            {article.updated_at
+              ? `${unixYMD(article.updated_at)}に更新`
+              : `${article.created_at}に公開`}
+          </p>
+          <p>{article.content}</p>
+        </div>
+      </PageWrapper>
     </>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // 全てのパスを取得
-  const { articles }: API_RES_TYPE['onlyArticleId'] = await getArticlesSQL(
+  const { articles }: API_RES_TYPE['onlyArticleId'] = await selectQuery(
     SQL.getOnlyArticleId,
   );
   const paths = articles.map((article) => ({

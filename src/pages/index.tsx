@@ -49,8 +49,9 @@ export default function Page({
             </div>
             {noticesCount > 0 ? (
               notices.map((notice) => (
-                <div
+                <Link
                   key={notice.id}
+                  href={`/notices/${notice.notice_id}`}
                   className='border-b-[0.8px] border-BorderGray mb-4 cursor-pointer hover:text-HoverGray'
                 >
                   <p className='text-neutral-500 text-[0.7rem]'>
@@ -59,7 +60,7 @@ export default function Page({
                       : unixYMD(notice.created_at)}
                   </p>
                   <p className='font-medium'>・{notice.title}</p>
-                </div>
+                </Link>
               ))
             ) : (
               <p>お知らせはありません。</p>
@@ -139,6 +140,7 @@ export const getStaticProps: GetStaticProps = async () => {
       const { noticesCount, notices } = await noticeRes.json();
       response.noticesCount = noticesCount;
       response.notices = notices;
+      console.log('お知らせ', response);
     }
 
     // カテゴリを取得

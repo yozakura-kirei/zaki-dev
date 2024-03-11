@@ -1,4 +1,4 @@
-import { getArticleIdSQL } from '@/libs/mysql/articles';
+import { getArticleIdSQL } from '@/libs/mysql';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 /**

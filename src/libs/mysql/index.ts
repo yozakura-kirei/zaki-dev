@@ -3,12 +3,12 @@ import { SQL } from '@/utils/sql';
 import { RowDataPacket } from 'mysql2';
 
 /**
- * 記事関係のSQLを実行する
+ * セレクト文を実行する(共通)
  * @param sql   実行するSQL文
- * @param limit 記事取得件数
+ * @param limit リミット
  * @returns
  */
-export async function getArticlesSQL(sql: string, limit?: number) {
+export async function selectQuery(sql: string, limit?: number) {
   const connection = await mysqlClient();
 
   const limitSize = limit ? limit : 1000;
@@ -24,7 +24,7 @@ export async function getArticlesSQL(sql: string, limit?: number) {
     response.articlesCount = results.length;
     response.articles = results;
   } catch (err) {
-    console.error('getArticlesSQL error...', err);
+    console.error('selectQuery error...', err);
   } finally {
     await connection.end();
   }
