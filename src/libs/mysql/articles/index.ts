@@ -11,8 +11,6 @@ import { RowDataPacket } from 'mysql2';
 export async function getArticlesSQL(sql: string, limit?: number) {
   const connection = await mysqlClient();
 
-  console.log(sql, limit);
-
   const limitSize = limit ? limit : 1000;
 
   const response = {
