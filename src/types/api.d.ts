@@ -26,4 +26,10 @@ export interface API_RES_TYPE {
     created_at: number;
     updated_at: number;
   };
+  onlyArticleId: {
+    articlesCount: number;
+    articles: {
+      article_id: string;
+    }[];
+  };
 }

@@ -1,4 +1,5 @@
 import { getArticlesSQL } from '@/libs/mysql/articles';
+import { SQL } from '@/utils/sql';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 /**
@@ -12,7 +13,10 @@ export default async function getArticles(
 ) {
   try {
     const { limit } = req.query;
-    const articles = await getArticlesSQL(parseInt(limit as string));
+    const articles = await getArticlesSQL(
+      SQL.getArticles,
+      parseInt(limit as string),
+    );
     res.status(200).json(articles);
   } catch (err) {
     res.status(500).json(err);

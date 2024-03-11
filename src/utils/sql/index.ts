@@ -38,4 +38,6 @@ export const SQL = {
     LEFT JOIN m_categories mc ON mc.id = iac.m_categories_id \
     WHERE ta.article_id = ? \
     GROUP BY ta.article_id LIMIT 1;`,
+  // articleIdのみを取得
+  getOnlyArticleId: `SELECT ta.article_id  FROM t_articles ta LIMIT ?;`,
 };

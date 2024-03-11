@@ -1,9 +1,11 @@
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
+import { getArticlesSQL } from '@/libs/mysql/articles';
 import { API_RES_TYPE } from '@/types/api';
 import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
-import { GetServerSideProps } from 'next';
+import { SQL } from '@/utils/sql';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
 interface ArticleIdPageProps {
   status: number;
@@ -46,28 +48,46 @@ export default function Page({ status, article }: ArticleIdPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
+export const getStaticPaths: GetStaticPaths = async () => {
+  // 全てのパスを取得
+  const { articles }: API_RES_TYPE['onlyArticleId'] = await getArticlesSQL(
+    SQL.getOnlyArticleId,
+  );
+  const paths = articles.map((article) => ({
+    params: { id: article.article_id },
+  }));
 
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response = {
     status: 200,
     article: {},
   };
 
-  const detailRes = await fetch(
-    `${process.env.APP_ENDPONT}/api/articles/detail?id=${id}`,
-  );
-  if (detailRes.ok) {
-    const article: API_RES_TYPE['articles'] = await detailRes.json();
-    response.article = article;
-  } else {
-    // 記事が見つからない場合は404ページにリダイレクト
-    return {
-      notFound: true,
-    };
+  try {
+    if (params) {
+      const detailRes = await fetch(
+        `${process.env.APP_ENDPONT}/api/articles/detail?id=${params.id}`,
+      );
+      if (detailRes.ok) {
+        const article: API_RES_TYPE['articles'] = await detailRes.json();
+        response.article = article;
+      } else {
+        // 記事が見つからない場合は404ページにリダイレクト
+        return {
+          notFound: true,
+        };
+      }
+    }
+  } catch (err) {
+    console.error('getArticleId error...', err);
   }
 
-  console.log('レスポンス', response);
   return {
     props: response,
   };
