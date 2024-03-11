@@ -1,15 +1,19 @@
 import { mysqlClient } from '@/libs/client';
-import { API_RES_TYPE } from '@/types/api';
 import { SQL } from '@/utils/sql';
 import { RowDataPacket } from 'mysql2';
 
 /**
- * 記事を取得する
+ * 記事関係のSQLを実行する
+ * @param sql   実行するSQL文
  * @param limit 記事取得件数
  * @returns
  */
-export async function getArticlesSQL(limit: number) {
+export async function getArticlesSQL(sql: string, limit?: number) {
   const connection = await mysqlClient();
+
+  console.log(sql, limit);
+
+  const limitSize = limit ? limit : 1000;
 
   const response = {
     articlesCount: 0,
@@ -17,8 +21,8 @@ export async function getArticlesSQL(limit: number) {
   };
 
   try {
-    const [results] = await connection.execute<[]>(SQL.getArticles, [limit]);
-    console.log(connection.format(SQL.getArticles), 'params: ', limit);
+    const [results] = await connection.execute<[]>(sql, [limitSize]);
+    console.log(connection.format(SQL.getArticles), 'params: ', limitSize);
     response.articlesCount = results.length;
     response.articles = results;
   } catch (err) {
