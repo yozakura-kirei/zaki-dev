@@ -14,15 +14,15 @@ export async function selectQuery(sql: string, limit?: number) {
   const limitSize = limit ? limit : 1000;
 
   const response = {
-    articlesCount: 0,
-    articles: [],
+    count: 0,
+    data: [],
   };
 
   try {
     const [results] = await connection.execute<[]>(sql, [limitSize]);
     console.log(connection.format(SQL.getArticles), 'params: ', limitSize);
-    response.articlesCount = results.length;
-    response.articles = results;
+    response.count = results.length;
+    response.data = results;
   } catch (err) {
     console.error('selectQuery error...', err);
   } finally {
@@ -33,19 +33,16 @@ export async function selectQuery(sql: string, limit?: number) {
 }
 
 /**
- * article_idをもとに記事の詳細を取得する
+ * idをもとにデータを取得する(共通)
  */
-export async function getArticleIdSQL(id: string) {
+export async function selectQueryId(sql: string, id: string) {
   const connection = await mysqlClient();
 
   let response: RowDataPacket | boolean;
 
   try {
-    const [results] = await connection.execute<RowDataPacket[]>(
-      SQL.getArticleId,
-      [id],
-    );
-    console.log(connection.format(SQL.getArticleId), 'params: ', id);
+    const [results] = await connection.execute<RowDataPacket[]>(sql, [id]);
+    console.log(connection.format(sql), 'params: ', id);
     if (results && results.length > 0) {
       response = results[0];
     } else {
@@ -53,7 +50,7 @@ export async function getArticleIdSQL(id: string) {
       // throw new Error(`Not Found article ${id}`);
     }
   } catch (err) {
-    console.error('getArticleIdSQL error...', err);
+    console.error(`SQL ID Error... ${sql}`, err);
     response = false;
   } finally {
     await connection.end();

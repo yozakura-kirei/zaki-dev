@@ -29,7 +29,7 @@ export default function Custom404() {
             からご利用ください
           </p>
           <Link href={PATH.ROOT} className='w-[12rem] text-center my-4'>
-            <MiniCard>トップページへ戻る</MiniCard>
+            <MiniCard categoryName='トップページへ戻る' />
           </Link>
         </section>
       </PageWrapper>

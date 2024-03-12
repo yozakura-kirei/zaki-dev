@@ -28,9 +28,15 @@ export interface API_RES_TYPE {
     updated_at: number;
   };
   onlyArticleId: {
-    articlesCount: number;
-    articles: {
+    count: number;
+    data: {
       article_id: string;
+    }[];
+  };
+  onlyNoticeId: {
+    count: number;
+    data: {
+      notice_id: string;
     }[];
   };
 }
