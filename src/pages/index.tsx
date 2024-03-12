@@ -72,10 +72,11 @@ export default function Page({
             <div className='flex flex-wrap gap-4 my-4'>
               {categoriesCount > 0 &&
                 categories.map((category) => (
-                  <MiniCard key={category.id}>
-                    <span className='mr-1'>{category.name}</span>
-                    <span>({category.count})</span>
-                  </MiniCard>
+                  <MiniCard
+                    key={category.id}
+                    categoryName={category.name}
+                    subText={category.count}
+                  />
                 ))}
             </div>
           </div>
@@ -135,11 +136,11 @@ export const getStaticProps: GetStaticProps = async () => {
 
   try {
     // お知らせを取得
-    const noticeRes = await fetch(`${API.NOTICES}=5`);
+    const noticeRes = await fetch(`${API.SELECT_ALL}=5&type=2`);
     if (noticeRes.ok) {
-      const { noticesCount, notices } = await noticeRes.json();
-      response.noticesCount = noticesCount;
-      response.notices = notices;
+      const { count, data } = await noticeRes.json();
+      response.noticesCount = count;
+      response.notices = data;
       console.log('お知らせ', response);
     }
 
@@ -152,11 +153,11 @@ export const getStaticProps: GetStaticProps = async () => {
     }
 
     // 記事を取得
-    const articlesRes = await fetch(`${API.ARTICLES}=10`);
+    const articlesRes = await fetch(`${API.SELECT_ALL}=10&type=1`);
     if (articlesRes.ok) {
-      const { articlesCount, articles } = await articlesRes.json();
-      response.articlesCount = articlesCount;
-      response.articles = articles;
+      const { count, data } = await articlesRes.json();
+      response.articlesCount = count;
+      response.articles = data;
     }
   } catch (err) {
     console.error('Top Page server error...', err);

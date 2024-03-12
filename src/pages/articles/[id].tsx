@@ -1,7 +1,9 @@
+import MiniCard from '@/components/atoms/MiniCard';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { selectQuery } from '@/libs/mysql';
 import { API_RES_TYPE } from '@/types/api';
+import { API, PATH } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
 import { SQL } from '@/utils/sql';
@@ -27,15 +29,12 @@ export default function Page({ status, article }: ArticleIdPageProps) {
         <div>
           <h1 className='font-bold text-[1.2rem] my-4'>{article.title}</h1>
           {/* カテゴリボタン */}
-          {article.category_name &&
-            categories.map((category) => (
-              <button
-                key={category}
-                className='bg-ThinGray text-sm py-2 px-4 mr-4 rounded-xl shadow-md cursor-pointer hover:text-HoverGray'
-              >
-                {category}
-              </button>
-            ))}
+          <div className='flex flex-wrap gap-4 my-4'>
+            {article.category_name &&
+              categories.map((category) => (
+                <MiniCard key={category} categoryName={category} />
+              ))}
+          </div>
           <p className='my-4'>
             {article.updated_at
               ? `${unixYMD(article.updated_at)}に更新`
@@ -50,10 +49,10 @@ export default function Page({ status, article }: ArticleIdPageProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // 全てのパスを取得
-  const { articles }: API_RES_TYPE['onlyArticleId'] = await selectQuery(
+  const { data }: API_RES_TYPE['onlyArticleId'] = await selectQuery(
     SQL.getOnlyArticleId,
   );
-  const paths = articles.map((article) => ({
+  const paths = data.map((article) => ({
     params: { id: article.article_id },
   }));
 
@@ -64,7 +63,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log('コンテキスト', params);
   const response = {
     status: 200,
     article: {},
@@ -72,13 +70,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     if (params) {
-      const detailRes = await fetch(
-        `${process.env.APP_ENDPONT}/api/articles/detail?id=${params.id}`,
-      );
+      const detailRes = await fetch(`${API.SELECT_ID}id=${params.id}&type=1`);
       if (detailRes.ok) {
         const article: API_RES_TYPE['articles'] = await detailRes.json();
         response.article = article;
-        // console.log('確認', response);
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {
@@ -88,6 +83,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   } catch (err) {
     console.error('getArticleId error...', err);
+    // 500エラーに飛ばす
+    throw new Error('getArticleId error...');
   }
 
   return {

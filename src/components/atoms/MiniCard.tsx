@@ -1,15 +1,18 @@
-import { Children, ReactNode } from 'react';
-
 interface MiniCardProps {
-  children: ReactNode;
+  categoryName: string;
+  subText?: string | number;
 }
 
-export default function MiniCard({ children }: MiniCardProps) {
+/**
+ * カテゴリのミニカード
+ * @param param0
+ * @returns
+ */
+export default function MiniCard({ categoryName, subText }: MiniCardProps) {
   return (
     <div className='bg-ThinGray text-sm py-2 px-4 rounded-xl shadow-md cursor-pointer hover:text-HoverGray'>
-      {/* <span className='mr-1'>{category.name}</span>
-      <span>({category.count})</span> */}
-      {children}
+      <span className={`${subText ? 'mr-1' : ''}`}>{categoryName}</span>
+      {subText && <span>({subText})</span>}
     </div>
   );
 }

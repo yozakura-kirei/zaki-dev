@@ -38,7 +38,13 @@ export const SQL = {
     LEFT JOIN m_categories mc ON mc.id = iac.m_categories_id \
     WHERE ta.article_id = ? \
     GROUP BY ta.article_id LIMIT 1;`,
+  // お知らせの詳細を取得
+  getNoticeId: `SELECT \ 
+    ta.id, ta.notice_id, ta.title, ta.is_fixed, ta.content, mcn.name, ta.created_at, ta.updated_at \
+    FROM t_notices ta \
+    LEFT JOIN m_category_notices mcn ON mcn.id = ta.m_category_notices_id \
+    WHERE notice_id = ?;`,
   // articleIdのみを取得
-  getOnlyArticleId: `SELECT ta.article_id  FROM t_articles ta LIMIT ?;`,
+  getOnlyArticleId: `SELECT ta.article_id FROM t_articles ta LIMIT ?;`,
   getOnlyNoticeId: `SELECT tn.notice_id FROM t_notices tn LIMIT ?;`,
 };
