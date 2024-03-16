@@ -39,4 +39,11 @@ export interface API_RES_TYPE {
       notice_id: string;
     }[];
   };
+  searchResults: {
+    // data: {
+    path_id: string;
+    title: string;
+    content: string;
+  };
+  // };
 }

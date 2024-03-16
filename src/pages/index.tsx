@@ -136,7 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   try {
     // お知らせを取得
-    const noticeRes = await fetch(`${API.SELECT_ALL}=5&type=2`);
+    const noticeRes = await fetch(`${API.SELECT_MULT}=5&type=2`);
     if (noticeRes.ok) {
       const { count, data } = await noticeRes.json();
       response.noticesCount = count;
@@ -153,7 +153,7 @@ export const getStaticProps: GetStaticProps = async () => {
     }
 
     // 記事を取得
-    const articlesRes = await fetch(`${API.SELECT_ALL}=10&type=1`);
+    const articlesRes = await fetch(`${API.SELECT_MULT}=10&type=1`);
     if (articlesRes.ok) {
       const { count, data } = await articlesRes.json();
       response.articlesCount = count;

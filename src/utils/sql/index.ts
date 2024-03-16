@@ -46,5 +46,15 @@ export const SQL = {
     WHERE notice_id = ?;`,
   // articleIdのみを取得
   getOnlyArticleId: `SELECT ta.article_id FROM t_articles ta LIMIT ?;`,
+  // noticeIdのみを取得
   getOnlyNoticeId: `SELECT tn.notice_id FROM t_notices tn LIMIT ?;`,
+  /** 検索 */
+  // 記事
+  searchArticle: `SELECT ta.article_id AS path_id, ta.title, ta.content FROM t_articles ta \
+    WHERE MATCH (title, content) AGAINST (? IN BOOLEAN MODE) LIMIT ?;`,
+  // カテゴリ
+  searchCategory: ``,
+  // お知らせ
+  searchNotice: `SELECT tn.notice_id AS path_id, tn.title, tn.content FROM t_notices tn \
+    WHERE MATCH (title, content) AGAINST (? IN BOOLEAN MODE) LIMIT ?;`,
 };

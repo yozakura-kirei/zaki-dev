@@ -4,3 +4,8 @@ import dayjs from 'dayjs';
 export function unixYMD(value: number) {
   return dayjs(value).format('YYYY-MM-DD');
 }
+
+// 全角スペースを半角へ変換
+export function convertFullWidth(text: string) {
+  return text.replace(/　/g, ' ');
+}
