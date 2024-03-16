@@ -13,13 +13,15 @@ export default function Header() {
             <Link href={PATH.ROOT}>{SiteName}</Link>
           </h1>
         </div>
-        <ul className='flex items-center justify-end'>
-          <li className='flex items-center mr-6 cursor-pointer'>
-            <span className='mr-2'>
-              <CiSearch />
-            </span>
-            検索
-          </li>
+        <ul className='flex items-center justify-end text-[0.8rem] md:text-[1rem]'>
+          <Link href={'/search'}>
+            <li className='flex items-center mr-4 md:mr-6 cursor-pointer'>
+              <span className='mr-2'>
+                <CiSearch />
+              </span>
+              検索
+            </li>
+          </Link>
           <li className=''>
             <Link
               href={PATH.CONTACTS}

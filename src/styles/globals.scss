@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.c_searchBox {
+  background-image: url('/icons/down.svg');
+  background-size: 27px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 8px) center;
+}
