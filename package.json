@@ -17,6 +17,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "@next/bundle-analyzer": "^14.1.3",
     "dayjs": "^1.11.10",
     "mysql2": "^3.9.2",
