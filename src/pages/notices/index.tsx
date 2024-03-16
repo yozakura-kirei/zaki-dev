@@ -58,7 +58,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   try {
     // お知らせを最大50件取得
-    const noticeRes = await fetch(`${API.SELECT_ALL}=50&type=2`);
+    const noticeRes = await fetch(`${API.SELECT_MULT}=50&type=2`);
     if (noticeRes.ok) {
       const { count, data } = await noticeRes.json();
       response.noticesCount = count;

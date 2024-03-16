@@ -58,3 +58,41 @@ export async function selectQueryId(sql: string, id: string) {
 
   return response;
 }
+
+/**
+ * 検索SQLを実行する
+ * @param sql
+ * @param searchText 検索テキスト
+ * @param limit
+ * @returns
+ */
+export async function searchQuery(
+  sql: string,
+  searchText: string,
+  limit?: number,
+) {
+  const connection = await mysqlClient();
+
+  const limitSize = limit ? limit : 1000;
+
+  const response = {
+    count: 0,
+    data: [],
+  };
+
+  try {
+    const [results] = await connection.execute<[]>(sql, [
+      searchText,
+      limitSize,
+    ]);
+    console.log(connection.format(SQL.getArticles), 'params: ', limitSize);
+    response.count = results.length;
+    response.data = results;
+  } catch (err) {
+    console.error('selectQuery error...', err);
+  } finally {
+    await connection.end();
+  }
+
+  return response;
+}

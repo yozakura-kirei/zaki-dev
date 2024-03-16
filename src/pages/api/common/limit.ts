@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 /**
  * データ一覧を取得する(共通)
  * @param req limit TOPは最大10件のlimit
- * @param req type 1...article, 2...notice
+ * @param req type 1...article, 2...notice、3...article検索、4...category検索、5...notice検索
  * @param res
  */
 export default async function selectSQL(
@@ -14,13 +14,16 @@ export default async function selectSQL(
 ) {
   try {
     const { limit, type } = req.query;
-    let response;
+    let sql = '';
 
-    if (parseInt(type as string) === 1) {
-      response = await selectQuery(SQL.getArticles, parseInt(limit as string));
-    } else if (parseInt(type as string) === 2) {
-      response = await selectQuery(SQL.getNotices, parseInt(limit as string));
+    if (type === '1') {
+      sql = SQL.getArticles;
+    } else if (type === '2') {
+      sql = SQL.getNotices;
     }
+
+    const response = await selectQuery(sql, parseInt(limit as string));
+
     res.status(200).json(response);
   } catch (err) {
     res.status(500).json(err);
