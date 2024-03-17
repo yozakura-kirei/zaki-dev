@@ -15,7 +15,7 @@ interface ArticleIdPageProps {
   article: API_RES_TYPE['articles'];
 }
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 /**
  * [SSG] 記事の詳細画面
