@@ -7,7 +7,7 @@ export const API = {
   ARTICLES: `${process.env.APP_ENDPONT}/api/articles/limit?limit`,
   SELECT_MULT: `${process.env.APP_ENDPONT}/api/common/limit?limit`,
   SEARCH_MULT: `${process.env.APP_ENDPONT}/api/common/search?limit`,
-  SELECT_ID: `${process.env.APP_ENDPONT}/api/common/detail?`,
+  DETAIL_ID: `${process.env.APP_ENDPONT}/api/common/detail?`,
 };
 
 /**
@@ -18,4 +18,5 @@ export const PATH = {
   CONTACTS: '/contacts',
   NOTICES: '/notices',
   ARTICLES: '/articles',
+  CATEGORY: '/category',
 };

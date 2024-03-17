@@ -9,3 +9,19 @@ export function unixYMD(value: number) {
 export function convertFullWidth(text: string) {
   return text.replace(/　/g, ' ');
 }
+
+// カテゴリ名とパス名のオブジェクトを生成する
+export function createCategoryObj(categories: string, searchName: string) {
+  const arrCategories = categories.split(',');
+  const arrSearchName = searchName.split(',');
+
+  const categoriesObj = arrCategories.reduce(
+    (obj: Array<{ name: string; path: string }>, key, index) => {
+      obj.push({ name: key, path: arrSearchName[index] });
+      return obj;
+    },
+    [],
+  );
+
+  return categoriesObj;
+}

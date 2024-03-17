@@ -8,7 +8,7 @@ import { RowDataPacket } from 'mysql2';
  * @param limit リミット
  * @returns
  */
-export async function selectQuery(sql: string, limit?: number) {
+export async function selectQuery(sql: string, limit?: number, id?: string) {
   const connection = await mysqlClient();
 
   const limitSize = limit ? limit : 1000;
@@ -18,11 +18,21 @@ export async function selectQuery(sql: string, limit?: number) {
     data: [],
   };
 
+  let selectResults;
+
   try {
-    const [results] = await connection.execute<[]>(sql, [limitSize]);
-    console.log(connection.format(SQL.getArticles), 'params: ', limitSize);
-    response.count = results.length;
-    response.data = results;
+    if (id) {
+      const [results] = await connection.execute<[]>(sql, [id, limitSize]);
+      console.log(connection.format(sql), 'params: ', id, limitSize);
+
+      selectResults = results;
+    } else {
+      const [results] = await connection.execute<[]>(sql, [limitSize]);
+      console.log(connection.format(sql), 'params: ', limitSize);
+      selectResults = results;
+    }
+    response.count = selectResults.length;
+    response.data = selectResults;
   } catch (err) {
     console.error('selectQuery error...', err);
   } finally {
@@ -35,13 +45,18 @@ export async function selectQuery(sql: string, limit?: number) {
 /**
  * idをもとにデータを取得する(共通)
  */
-export async function selectQueryId(sql: string, id: string) {
+export async function selectQueryId(sql: string, id: string, limit?: number) {
   const connection = await mysqlClient();
 
   let response: RowDataPacket | boolean;
 
   try {
-    const [results] = await connection.execute<RowDataPacket[]>(sql, [id]);
+    const limitSize = limit ? limit : 1000;
+
+    const [results] = await connection.execute<RowDataPacket[]>(sql, [
+      id,
+      limitSize,
+    ]);
     console.log(connection.format(sql), 'params: ', id);
     if (results && results.length > 0) {
       response = results[0];

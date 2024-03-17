@@ -1,3 +1,4 @@
+import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API_RES_TYPE } from '@/types/api';
@@ -26,9 +27,7 @@ export default function Page({ articlesCount, articles }: ArticlePageProps) {
         description={Description.basic}
       />
       <PageWrapper isGrid={true}>
-        <div>
-          <h2 className='font-bold text-[1.4rem] mb-8'>記事一覧</h2>
-        </div>
+        <H2Tag headingText='記事一覧' isMore={false} />
         {articlesCount > 0 ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>
             <>

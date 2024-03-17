@@ -1,3 +1,4 @@
+import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API_RES_TYPE } from '@/types/api';
@@ -26,7 +27,8 @@ export default function Page({ noticesCount, notices }: NoticesPageProps) {
       />
       <PageWrapper isGrid={false}>
         <div>
-          <h2 className='font-bold text-[1.4rem] mb-8'>お知らせ</h2>
+          {/* <h2 className='font-bold text-[1.4rem] mb-8'>お知らせ</h2> */}
+          <H2Tag headingText='お知らせ' isMore={false} />
           {noticesCount > 0 ? (
             notices.map((notice) => (
               <Link

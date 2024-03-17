@@ -8,11 +8,11 @@ export default function Page() {
     <>
       <MetaData
         isTitle={false}
-        title='お問い合わせ'
+        title='カテゴリー'
         description={Description.basic}
       />
       <PageWrapper isGrid={false}>
-        <H2Tag headingText='お問い合わせ' isMore={false} />
+        <H2Tag headingText='カテゴリー' isMore={false} />
       </PageWrapper>
     </>
   );

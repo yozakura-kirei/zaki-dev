@@ -14,7 +14,6 @@ export default async function searchSQL(
 ) {
   try {
     const { limit, searchText, type } = req.query;
-    console.log('これはなんだ？？', limit, searchText, type);
     let sql = '';
 
     if (type === '1') {

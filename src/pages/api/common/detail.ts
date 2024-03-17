@@ -1,11 +1,12 @@
-import { selectQueryId } from '@/libs/mysql';
+import { selectQuery, selectQueryId } from '@/libs/mysql';
+import { API_RES_TYPE } from '@/types/api';
 import { SQL } from '@/utils/sql';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * お知らせの詳細を取得する
+ * [共通] idを指定するセレクト実行API
  * @param req id 取得したいID
- * @param req type 1...article, 2...notice
+ * @param req type 1...article, 2...notice, 3...category
  * @param res
  */
 export default async function selectId(
@@ -14,12 +15,32 @@ export default async function selectId(
 ) {
   try {
     let response;
-    const { id, type } = req.query;
+    const { id, type, limit } = req.query;
 
     if (parseInt(type as string) === 1) {
+      // article詳細
       response = await selectQueryId(SQL.getArticleId, id as string);
     } else if (parseInt(type as string) === 2) {
+      // notice詳細
       response = await selectQueryId(SQL.getNoticeId, id as string);
+    } else if (parseInt(type as string) === 3) {
+      // カテゴリに紐づく記事
+      const selectResult: API_RES_TYPE['categorySearch'] = await selectQuery(
+        SQL.categoryArticles,
+        parseInt(limit as string),
+        `%${id}%`,
+      );
+
+      if (selectResult) {
+        // 検索したカテゴリ名を含めて返却
+        const categoryName: API_RES_TYPE['categorySearch'] = await selectQuery(
+          SQL.getOnlyCategoryName,
+          1,
+          `%${id}%`,
+        );
+        selectResult.categoryName = categoryName.data[0].name;
+      }
+      response = selectResult;
     }
 
     if (response) {
