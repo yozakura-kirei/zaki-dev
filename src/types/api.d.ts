@@ -15,6 +15,7 @@ export interface API_RES_TYPE {
   categories: {
     id: number;
     name: string;
+    search_name: string;
     count: number;
   };
   articles: {
@@ -23,7 +24,8 @@ export interface API_RES_TYPE {
     title: string;
     content: string;
     is_fixed: boolean;
-    category_name: string;
+    categories: string;
+    search_name: string;
     created_at: number;
     updated_at: number;
   };
@@ -39,11 +41,40 @@ export interface API_RES_TYPE {
       notice_id: string;
     }[];
   };
+  onlyCategoryName: {
+    count: number;
+    data: {
+      name: string;
+      search_name: string;
+    }[];
+  };
   searchResults: {
-    // data: {
     path_id: string;
     title: string;
     content: string;
   };
-  // };
+  categorySearch: {
+    count: number;
+    categoryName?: string;
+    data: {
+      name: string;
+    }[];
+  };
+
+  categorySearchRes: {
+    id: number;
+    article_id: string;
+    title: string;
+    content: string;
+    categories: string;
+    search_name: string;
+    is_fixed: boolean;
+    created_at: number;
+    updated_at?: number;
+  };
+  categoriesSearchResult: {
+    count: number;
+    data: API_RES_TYPE['categorySearchRes'][];
+    categoryName: string;
+  };
 }

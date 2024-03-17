@@ -1,3 +1,4 @@
+import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API_RES_TYPE } from '@/types/api';
@@ -37,14 +38,12 @@ export default function Page() {
     event.preventDefault();
     // スペースは全て半角にする
     const convertInputValue = convertFullWidth(inputValue);
-    console.log(typeof selectedValue, convertInputValue);
     const response = await fetch(
       `${API.SEARCH_MULT}=10&type=${selectedValue}&searchText=${inputValue}`,
     );
 
     if (response.ok) {
       const searchResult = await response.json();
-      console.log('検索結果', searchResult);
       setSearchResults(searchResult.data);
     }
     // }
@@ -61,7 +60,7 @@ export default function Page() {
         description={Description.basic}
       />
       <PageWrapper isGrid={false}>
-        <h1>サイト内検索</h1>
+        <H2Tag headingText='サイト内検索' isMore={false} />
         <p>
           検索したいキーワードを入力してください(複数の場合はスペース区切り)
         </p>

@@ -1,4 +1,5 @@
 import MiniCard from '@/components/atoms/MiniCard';
+import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API_RES_TYPE } from '@/types/api';
@@ -7,7 +8,6 @@ import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import { FaAnglesRight } from 'react-icons/fa6';
 
 interface TopPageProps {
   noticesCount: number;
@@ -35,18 +35,9 @@ export default function Page({
     <>
       <MetaData isTitle={true} description={Description.basic} />
       <PageWrapper isGrid={true}>
-        <div className='grid grid-cols-1 gap-8 mt-4'>
+        <div className='grid grid-cols-1 gap-8'>
           <div className=''>
-            <div className='flex justify-between items-center mb-4'>
-              <h2 className='font-bold text-[1.4rem]'>お知らせ</h2>
-              <Link
-                href={PATH.NOTICES}
-                className='flex items-center gap-1 text-[0.9rem] hover:text-HoverBlue'
-              >
-                <FaAnglesRight />
-                <p>もっと見る</p>
-              </Link>
-            </div>
+            <H2Tag headingText='お知らせ' isMore={true} path={PATH.NOTICES} />
             {noticesCount > 0 ? (
               notices.map((notice) => (
                 <Link
@@ -68,13 +59,18 @@ export default function Page({
           </div>
           {/* カテゴリエリア */}
           <div className='my-4'>
-            <h2 className='font-bold text-[1.4rem]'>カテゴリー</h2>
+            <H2Tag
+              headingText='カテゴリー'
+              isMore={true}
+              path={PATH.CATEGORY}
+            />
             <div className='flex flex-wrap gap-4 my-4'>
               {categoriesCount > 0 &&
                 categories.map((category) => (
                   <MiniCard
                     key={category.id}
                     categoryName={category.name}
+                    path={category.search_name}
                     subText={category.count}
                   />
                 ))}
@@ -82,16 +78,7 @@ export default function Page({
           </div>
           {/* 記事エリア */}
           <div className=''>
-            <div className='flex justify-between items-center mb-4'>
-              <h2 className='font-bold text-[1.4rem] mb-4'>新着記事</h2>
-              <Link
-                href={PATH.ARTICLES}
-                className='flex items-center gap-1 text-[0.9rem] hover:text-HoverBlue'
-              >
-                <FaAnglesRight />
-                <p>もっと見る</p>
-              </Link>
-            </div>
+            <H2Tag headingText='新着記事' isMore={true} path={PATH.ARTICLES} />
             {articlesCount > 0 ? (
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>
                 <>
@@ -141,7 +128,6 @@ export const getStaticProps: GetStaticProps = async () => {
       const { count, data } = await noticeRes.json();
       response.noticesCount = count;
       response.notices = data;
-      console.log('お知らせ', response);
     }
 
     // カテゴリを取得

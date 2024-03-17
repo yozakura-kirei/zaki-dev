@@ -3,9 +3,9 @@ import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { selectQuery } from '@/libs/mysql';
 import { API_RES_TYPE } from '@/types/api';
-import { API, PATH } from '@/utils/common/path';
+import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
-import { unixYMD } from '@/utils/createValue';
+import { createCategoryObj, unixYMD } from '@/utils/createValue';
 import { SQL } from '@/utils/sql';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
@@ -14,9 +14,17 @@ interface ArticleIdPageProps {
   article: API_RES_TYPE['articles'];
 }
 
+/**
+ * [SSG] 記事の詳細画面
+ * @param param0
+ * @returns
+ */
 export default function Page({ status, article }: ArticleIdPageProps) {
-  // カテゴリを分割
-  const categories = article && article.category_name.split(',');
+  // カテゴリ名とサーチネームをオブジェクトに変換
+  const categoryObj = createCategoryObj(
+    article.categories,
+    article.search_name,
+  );
 
   return (
     <>
@@ -30,9 +38,13 @@ export default function Page({ status, article }: ArticleIdPageProps) {
           <h1 className='font-bold text-[1.2rem] my-4'>{article.title}</h1>
           {/* カテゴリボタン */}
           <div className='flex flex-wrap gap-4 my-4'>
-            {article.category_name &&
-              categories.map((category) => (
-                <MiniCard key={category} categoryName={category} />
+            {article.categories &&
+              categoryObj.map((category) => (
+                <MiniCard
+                  key={category.name}
+                  categoryName={category.name}
+                  path={category.path}
+                />
               ))}
           </div>
           <p className='my-4'>
@@ -70,7 +82,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     if (params) {
-      const detailRes = await fetch(`${API.SELECT_ID}id=${params.id}&type=1`);
+      const detailRes = await fetch(`${API.DETAIL_ID}id=${params.id}&type=1`);
+
       if (detailRes.ok) {
         const article: API_RES_TYPE['articles'] = await detailRes.json();
         response.article = article;

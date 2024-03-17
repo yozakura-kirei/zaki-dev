@@ -59,7 +59,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     if (params) {
-      const detailRes = await fetch(`${API.SELECT_ID}id=${params.id}&type=2`);
+      const detailRes = await fetch(`${API.DETAIL_ID}id=${params.id}&type=2`);
       if (detailRes.ok) {
         const notice: API_RES_TYPE['notices'] = await detailRes.json();
         response.notice = notice;
