@@ -86,4 +86,6 @@ export const SQL = {
     GROUP BY iac.t_articles_id \
     HAVING search_name LIKE ? \
     LIMIT ?;`,
+  // お問い合わせインサート
+  contactInsert: `INSERT INTO t_contacts SET ?`,
 };

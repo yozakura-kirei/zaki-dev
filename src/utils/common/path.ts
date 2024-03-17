@@ -8,6 +8,7 @@ export const API = {
   SELECT_MULT: `${process.env.APP_ENDPONT}/api/common/limit?limit`,
   SEARCH_MULT: `${process.env.APP_ENDPONT}/api/common/search?limit`,
   DETAIL_ID: `${process.env.APP_ENDPONT}/api/common/detail?`,
+  INSERT: `${process.env.APP_ENDPONT}/api/common/insert`,
 };
 
 /**
