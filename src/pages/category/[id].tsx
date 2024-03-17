@@ -54,7 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: true,
+    fallback: false,
   };
 };
 
@@ -74,6 +74,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       if (categoryArticleRes.ok) {
         const resJson = await categoryArticleRes.json();
         response.categoryArticle = resJson;
+
+        // 検索したカテゴリ名を取得
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {

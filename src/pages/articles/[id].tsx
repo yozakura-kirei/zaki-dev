@@ -3,6 +3,7 @@ import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { selectQuery } from '@/libs/mysql';
 import { API_RES_TYPE } from '@/types/api';
+import { INIT } from '@/types/init';
 import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
 import { createCategoryObj, unixYMD } from '@/utils/createValue';
@@ -14,31 +15,41 @@ interface ArticleIdPageProps {
   article: API_RES_TYPE['articles'];
 }
 
+export const dynamic = 'force-dynamic';
+
 /**
  * [SSG] 記事の詳細画面
  * @param param0
  * @returns
  */
-export default function Page({ status, article }: ArticleIdPageProps) {
+export default function Page({
+  status,
+  article = INIT['articles'],
+}: ArticleIdPageProps) {
   // カテゴリ名とサーチネームをオブジェクトに変換
-  const categoryObj = createCategoryObj(
-    article.categories,
-    article.search_name,
-  );
+  let categoryObj = null;
+
+  if (article?.categories && article.search_name) {
+    const result = createCategoryObj(article.categories, article.search_name);
+    categoryObj = result;
+  }
 
   return (
     <>
       <MetaData
         isTitle={false}
-        title={`${article.title}の記事`}
+        title={`${article && article.title}の記事`}
         description={Description.basic}
       />
       <PageWrapper isGrid={false}>
         <div>
-          <h1 className='font-bold text-[1.2rem] my-4'>{article.title}</h1>
+          <h1 className='font-bold text-[1.2rem] my-4'>
+            {article && article.title}
+          </h1>
           {/* カテゴリボタン */}
           <div className='flex flex-wrap gap-4 my-4'>
-            {article.categories &&
+            {article &&
+              categoryObj &&
               categoryObj.map((category) => (
                 <MiniCard
                   key={category.name}
@@ -48,9 +59,9 @@ export default function Page({ status, article }: ArticleIdPageProps) {
               ))}
           </div>
           <p className='my-4'>
-            {article.updated_at
+            {article && article.updated_at
               ? `${unixYMD(article.updated_at)}に更新`
-              : `${article.created_at}に公開`}
+              : `${unixYMD(article.created_at)}に公開`}
           </p>
           <p>{article.content}</p>
         </div>
@@ -70,7 +81,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 

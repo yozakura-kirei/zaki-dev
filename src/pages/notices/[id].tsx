@@ -13,7 +13,7 @@ interface NoticeIdPageProps {
   notice: API_RES_TYPE['notices'];
 }
 
-export default function Page({ status, notice }: NoticeIdPageProps) {
+export default function Page({ status = 200, notice }: NoticeIdPageProps) {
   return (
     <>
       <MetaData
