@@ -5,7 +5,6 @@ import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API, PATH } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
-import { error } from 'console';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -33,6 +32,7 @@ export default function Page() {
   });
 
   async function submitContact() {
+    // 問い合わせ内容をDBに保存
     const res = await fetch(API.INSERT, {
       method: 'POST',
       headers: {
@@ -41,7 +41,7 @@ export default function Page() {
       body: JSON.stringify(contactData),
     });
     if (res.ok) {
-      const { isError, isSave, insertData } = await res.json();
+      const { isError, isSave } = await res.json();
       if (isSave) {
         setStep(2);
       }

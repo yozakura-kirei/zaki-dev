@@ -8,6 +8,9 @@ import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { selectQuery } from '@/utils/sql/pg';
+import { SQL } from '@/utils/sql/queries';
+import { COLUMNS } from '@/types/columns';
 
 interface TopPageProps {
   noticesCount: number;
@@ -114,36 +117,35 @@ export default function Page({
 export const getStaticProps: GetStaticProps = async () => {
   const response = {
     noticesCount: 0,
-    notices: [],
+    notices: [] as COLUMNS['t_notices'][],
     categoriesCount: 0,
-    categories: [],
+    categories: [] as COLUMNS['m_categories'][],
     articlesCount: 0,
-    articles: [],
+    articles: [] as COLUMNS['t_articles'][],
   };
 
   try {
     // お知らせを取得
-    const noticeRes = await fetch(`${API.SELECT_MULT}=5&type=2`);
-    if (noticeRes.ok) {
-      const { count, data } = await noticeRes.json();
-      response.noticesCount = count;
-      response.notices = data;
+    const notices = await selectQuery(SQL.selectNotices, [5]);
+    if (notices.count > 0) {
+      response.noticesCount = notices.count;
+      response.notices = notices.rows;
     }
 
     // カテゴリを取得
-    const categoriesRes = await fetch(API.CATEGORY_ALL);
-    if (categoriesRes.ok) {
-      const { categoriesCount, categories } = await categoriesRes.json();
-      response.categoriesCount = categoriesCount;
-      response.categories = categories;
+    const categories = await selectQuery(SQL.selectCategories, [
+      'カテゴリなし',
+    ]);
+    if (categories.count > 0) {
+      response.categoriesCount = categories.count;
+      response.categories = categories.rows;
     }
 
     // 記事を取得
-    const articlesRes = await fetch(`${API.SELECT_MULT}=10&type=1`);
-    if (articlesRes.ok) {
-      const { count, data } = await articlesRes.json();
-      response.articlesCount = count;
-      response.articles = data;
+    const articles = await selectQuery(SQL.selectArticles, [10]);
+    if (articles.count > 0) {
+      response.articlesCount = articles.count;
+      response.articles = articles.rows;
     }
   } catch (err) {
     console.error('Top Page server error...', err);

@@ -1,20 +1,19 @@
 import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
-import { selectQuery } from '@/libs/mysql';
 import { API_RES_TYPE } from '@/types/api';
-import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
-import { SQL } from '@/utils/sql';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
+import { selectArticleCategories, selectQuery } from '@/utils/sql/pg';
+import { SQL } from '@/utils/sql/queries';
 
 interface PageProps {
   status: number;
   categoryArticle: API_RES_TYPE['categoriesSearchResult'];
 }
 
-export default function Page({ status, categoryArticle }: PageProps) {
+export default function Page({ categoryArticle }: PageProps) {
   return (
     <>
       <MetaData
@@ -45,10 +44,8 @@ export default function Page({ status, categoryArticle }: PageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data }: API_RES_TYPE['onlyCategoryName'] = await selectQuery(
-    SQL.getOnlyCategorySearchName,
-  );
-  const paths = data.map((category) => ({
+  const { rows } = await selectQuery(SQL.onlyCategorySearchName, []);
+  const paths = rows.map((category) => ({
     params: { id: category.search_name },
   }));
 
@@ -60,28 +57,32 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response = {
-    status: 200,
-    categoryArticle: {},
+    categoryArticle: {
+      count: 0,
+      data: [] as any[],
+      categoryName: '',
+    },
     searchName: '',
   };
 
   try {
     if (params) {
-      const categoryArticleRes = await fetch(
-        `${API.DETAIL_ID}id=${params.id}&type=3&limit=10`,
+      const { rows, count, categoryName } = await selectArticleCategories(
+        SQL.categoryArticles,
+        [`%${params.id}%`],
+        params.id as string,
       );
 
-      if (categoryArticleRes.ok) {
-        const resJson = await categoryArticleRes.json();
-        response.categoryArticle = resJson;
-
-        // 検索したカテゴリ名を取得
-      } else {
-        // 記事が見つからない場合は404ページにリダイレクト
+      // 記事が見つからない場合は404ページにリダイレクト
+      if (!count) {
         return {
           notFound: true,
         };
       }
+
+      response.categoryArticle.count = count;
+      response.categoryArticle.data = rows;
+      response.categoryArticle.categoryName = categoryName as string;
     }
   } catch (err) {
     console.error('getCategoryName error...', err);

@@ -1,21 +1,18 @@
 import MiniCard from '@/components/atoms/MiniCard';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
-import { selectQuery } from '@/libs/mysql';
 import { API_RES_TYPE } from '@/types/api';
 import { INIT } from '@/types/init';
-import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
 import { createCategoryObj, unixYMD } from '@/utils/createValue';
-import { SQL } from '@/utils/sql';
+import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { selectQuery } from '@/utils/sql/pg';
 
 interface ArticleIdPageProps {
   status: number;
   article: API_RES_TYPE['articles'];
 }
-
-// export const dynamic = 'force-dynamic';
 
 /**
  * [SSG] 記事の詳細画面
@@ -72,10 +69,8 @@ export default function Page({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // 全てのパスを取得
-  const { data }: API_RES_TYPE['onlyArticleId'] = await selectQuery(
-    SQL.getOnlyArticleId,
-  );
-  const paths = data.map((article) => ({
+  const { rows } = await selectQuery(SQL.onlyArticleId, []);
+  const paths = rows.map((article) => ({
     params: { id: article.article_id },
   }));
 
@@ -93,11 +88,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     if (params) {
-      const detailRes = await fetch(`${API.DETAIL_ID}id=${params.id}&type=1`);
-
-      if (detailRes.ok) {
-        const article: API_RES_TYPE['articles'] = await detailRes.json();
-        response.article = article;
+      const article = await selectQuery(SQL.selectArticleId, [params.id, 1]);
+      if (article.count > 0) {
+        response.article = article.rows[0];
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {

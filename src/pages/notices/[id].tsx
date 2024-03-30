@@ -1,11 +1,10 @@
 import MiniCard from '@/components/atoms/MiniCard';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
-import { selectQuery } from '@/libs/mysql';
+import { selectQuery } from '@/utils/sql/pg';
 import { API_RES_TYPE } from '@/types/api';
-import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
-import { SQL } from '@/utils/sql';
+import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 interface NoticeIdPageProps {
@@ -38,10 +37,8 @@ export default function Page({ status = 200, notice }: NoticeIdPageProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // お知らせの全てのパスを取得
-  const { data }: API_RES_TYPE['onlyNoticeId'] = await selectQuery(
-    SQL.getOnlyNoticeId,
-  );
-  const paths = data.map((notice) => ({
+  const { rows } = await selectQuery(SQL.onlyNoticeId, []);
+  const paths = rows.map((notice) => ({
     params: { id: notice.notice_id },
   }));
 
@@ -59,16 +56,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     if (params) {
-      const detailRes = await fetch(`${API.DETAIL_ID}id=${params.id}&type=2`);
-      if (detailRes.ok) {
-        const notice: API_RES_TYPE['notices'] = await detailRes.json();
-        response.notice = notice;
+      const { count, rows } = await selectQuery(SQL.selectNoticeId, [
+        params.id,
+      ]);
+      if (count > 0) {
+        response.notice = rows[0];
+      } else {
+        // お知らせが見つからない場合は404ページにリダイレクト
+        return {
+          notFound: true,
+        };
       }
-    } else {
-      // お知らせが見つからない場合は404ページへリダイレクト
-      return {
-        notFound: true,
-      };
     }
   } catch (err) {
     console.error('getNoticeId error...', err);

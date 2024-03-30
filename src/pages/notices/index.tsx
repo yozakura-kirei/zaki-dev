@@ -2,9 +2,11 @@ import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API_RES_TYPE } from '@/types/api';
-import { API } from '@/utils/common/path';
+import { COLUMNS } from '@/types/columns';
 import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
+import { selectQuery } from '@/utils/sql/pg';
+import { SQL } from '@/utils/sql/queries';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
@@ -55,16 +57,14 @@ export default function Page({ noticesCount, notices }: NoticesPageProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const response = {
     noticesCount: 0,
-    notices: [],
+    notices: [] as COLUMNS['t_notices'][],
   };
 
   try {
-    // お知らせを最大50件取得
-    const noticeRes = await fetch(`${API.SELECT_MULT}=50&type=2`);
-    if (noticeRes.ok) {
-      const { count, data } = await noticeRes.json();
+    const { count, rows } = await selectQuery(SQL.selectNotices, [50]);
+    if (count > 0) {
       response.noticesCount = count;
-      response.notices = data;
+      response.notices = rows;
     }
   } catch (err) {
     console.error('Notices Page server error...', err);

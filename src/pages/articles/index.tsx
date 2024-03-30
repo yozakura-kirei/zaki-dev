@@ -1,12 +1,14 @@
 import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
+import { selectQuery } from '@/utils/sql/pg';
 import { API_RES_TYPE } from '@/types/api';
-import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
 import { unixYMD } from '@/utils/createValue';
+import { SQL } from '@/utils/sql/queries';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { COLUMNS } from '@/types/columns';
 
 interface ArticlePageProps {
   articlesCount: number;
@@ -58,16 +60,15 @@ export default function Page({ articlesCount, articles }: ArticlePageProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const response = {
     articlesCount: 0,
-    articles: [],
+    articles: [] as COLUMNS['t_articles'][],
   };
 
   try {
     // 記事一覧を最大50件取得
-    const articlesRes = await fetch(`${API.SELECT_MULT}=50&type=1`);
-    if (articlesRes.ok) {
-      const { count, data } = await articlesRes.json();
+    const { count, rows } = await selectQuery(SQL.selectArticles, [50]);
+    if (count > 0) {
       response.articlesCount = count;
-      response.articles = data;
+      response.articles = rows;
     }
   } catch (err) {
     console.error('Articles Page server error...', err);
