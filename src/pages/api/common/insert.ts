@@ -1,7 +1,7 @@
-import { insertQuery } from '@/libs/mysql/transaction';
 import { createUnix } from '@/utils/createValue';
-import { SQL } from '@/utils/sql';
+import { saveQuery } from '@/utils/sql/pg';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { SQL } from '@/utils/sql/queries';
 
 /**
  * [共通] transactionでinsert処理を実行するAPI
@@ -15,12 +15,12 @@ export default async function insertHandler(
   try {
     if (req.method === 'POST') {
       req.body.created_at = createUnix();
-      const { isError, isSave, insertData } = await insertQuery(
-        SQL.contactInsert,
+      const { isError, isSave, rowCount } = await saveQuery(
+        SQL.insertContact,
         req.body,
       );
       if (!isError) {
-        res.status(201).json({ insertData, isError, isSave });
+        res.status(201).json({ rowCount, isError, isSave });
       } else {
         res.status(500).json(false);
       }

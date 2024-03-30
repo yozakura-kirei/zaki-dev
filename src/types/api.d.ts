@@ -60,6 +60,13 @@ export interface API_RES_TYPE {
       name: string;
     }[];
   };
+  articleCategoryType: {
+    count: number;
+    categoryName?: string;
+    rows: {
+      name: string;
+    }[];
+  };
 
   categorySearchRes: {
     id: number;
