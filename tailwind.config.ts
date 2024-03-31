@@ -1,17 +1,34 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        White: '#FFFFFF',
+        Basic: '#030a12cf',
+        BackGround: '#fafafa',
+        ThinGray: '#f5f5f5',
+        BorderGray: '#d4d4d4',
+        HoverBlue: '#2563eb',
+        HoverGray: '#a3a3a3',
+        BgNeutral: '#f3eee6',
+        CardText: '#404040',
+      },
+      fontFamily: {
+        Basic: [
+          'Noto Sans JP',
+          '-apple-system',
+          'blinkmacsystemfont',
+          'Segoe UI',
+          'Hiragino Kaku Gothic ProN',
+          'BIZ UDPGothic',
+          'meiryo',
+          'sans-serif',
+        ],
       },
     },
   },
