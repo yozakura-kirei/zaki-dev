@@ -3,12 +3,13 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     APP_ENDPONT: process.env.APP_ENDPONT,
-    DATABASE_URL: process.env.DATABASE_URL,
     PG_USER: process.env.PG_USER,
     PG_PASSWORD: process.env.PG_PASSWORD,
     PG_HOST: process.env.PG_HOST,
     PG_DATABASE: process.env.PG_DATABASE,
     PG_PORT: process.env.PG_PORT,
+    BASIC_USER: process.env.BASIC_USER,
+    BASIC_PASSWORD: process.env.BASIC_PASSWORD,
   },
   async headers() {
     return [
