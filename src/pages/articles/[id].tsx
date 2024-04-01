@@ -8,6 +8,7 @@ import { createCategoryObj, unixYMD } from '@/utils/createValue';
 import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
+import { changeHtml } from '@/utils/md/changeHtml';
 
 interface ArticleIdPageProps {
   status: number;
@@ -38,7 +39,7 @@ export default function Page({
         title={`${article && article.title}の記事`}
         description={Description.basic}
       />
-      <PageWrapper isGrid={false}>
+      <PageWrapper isGrid={true}>
         <div>
           <h1 className='font-bold text-[1.2rem] my-4'>
             {article && article.title}
@@ -60,7 +61,13 @@ export default function Page({
               ? `${unixYMD(article.updated_at)}に更新`
               : `${unixYMD(article.created_at)}に公開`}
           </p>
-          <p>{article.content}</p>
+          {/* <p>{article.content}</p> */}
+          <div className='prose lg:prose-xl'>
+            <div
+              className='my-4'
+              dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
+            />
+          </div>
         </div>
       </PageWrapper>
     </>
