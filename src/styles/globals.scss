@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'highlight.js/styles/vs2015.css';
+// @import 'highlight.js/styles/tokyo-night-dark.css';
+// @import 'highlight.js/styles/github-dark-dimmed.css';
 
 .c_searchBox {
   background-image: url('/icons/down.svg');
