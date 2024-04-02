@@ -62,12 +62,11 @@ export default function Page({
               : `${unixYMD(article.created_at)}に公開`}
           </p>
           {/* <p>{article.content}</p> */}
-          <div className='prose lg:prose-xl'>
-            <div
-              className='my-4'
-              dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
-            />
-          </div>
+
+          <div
+            className='md-container'
+            dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
+          />
         </div>
       </PageWrapper>
     </>
