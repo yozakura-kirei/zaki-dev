@@ -40,12 +40,15 @@ export default function Page({
         description={Description.basic}
       />
       <PageWrapper isGrid={true}>
-        <div>
-          <h1 className='font-bold text-[1.2rem] my-4'>
-            {article && article.title}
-          </h1>
+        <section className=''>
+          {/* タイトル */}
+          <div className='bg-neutral-100 flex justify-center items-center py-10 rounded-xl mt-6 mb-8 shadow-sm'>
+            <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
+              {article && article.title}
+            </h1>
+          </div>
           {/* カテゴリボタン */}
-          <div className='flex flex-wrap gap-4 my-4'>
+          <div className='flex flex-wrap gap-4 my-6'>
             {article &&
               categoryObj &&
               categoryObj.map((category) => (
@@ -56,7 +59,7 @@ export default function Page({
                 />
               ))}
           </div>
-          <p className='my-4'>
+          <p className='my-6 flex justify-end items-center text-neutral-600'>
             {article && article.updated_at
               ? `${unixYMD(article.updated_at)}に更新`
               : `${unixYMD(article.created_at)}に公開`}
@@ -67,7 +70,7 @@ export default function Page({
             className='md-container'
             dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
           />
-        </div>
+        </section>
       </PageWrapper>
     </>
   );
