@@ -9,7 +9,6 @@ export function changeHtml(markdown: string) {
     typographer: true,
     langPrefix: 'language-',
     highlight: function (str, lang) {
-      console.log('これは？', str, lang);
       if (lang && hljs.getLanguage(lang)) {
         try {
           return (
@@ -28,16 +27,6 @@ export function changeHtml(markdown: string) {
       );
     },
   });
-
-  // htmlにクラス属性を追加
-  // h1
-  // md.renderer.rules.heading_open = function () {
-  //   return '<h1 class="md-container__heading">';
-  // };
-  // // h2
-  // md.renderer.rules.heading2_open = function () {
-  //   return '<h2 class="md-container__heading2">';
-  // };
 
   // hタグをそれぞれでクラスを追加
   md.renderer.rules.heading_open = (
@@ -66,22 +55,21 @@ export function changeHtml(markdown: string) {
   };
 
   md.renderer.rules.table_open = () => {
-    return '<table class="md-container__h5">';
+    return '<table class="md-container__table">';
   };
 
   md.renderer.rules.blockquote_open = () => {
     return '<blockquote class="md-container__blockquote">';
   };
 
-  // md.renderer.rules.paragraph_open = (
-  //   tokens: Token[],
-  //   idx: number,
-  //   options: {},
-  //   env: {},
-  //   self: Renderer,
-  // ) => {
-  //   tokens[idx].attrs?.push(['class', 'p-tag']);
-  // };
+  // リンクを別タブ
+  // const links = document.querySelectorAll('p a');
+  // if (links) {
+  //   links.forEach((link) => {
+  //     link.setAttribute('target', '_blank');
+  //     link.setAttribute('rel', 'noopener noreferrer');
+  //   });
+  // }
 
   return md.render(markdown);
 }
