@@ -5,6 +5,7 @@ import { API_RES_TYPE } from '@/types/api';
 import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
 import { convertFullWidth } from '@/utils/createValue';
+import { changeHtml, simpleChangeHtml } from '@/utils/md/changeHtml';
 import Link from 'next/link';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
@@ -39,12 +40,13 @@ export default function Page() {
     // スペースは全て半角にする
     const convertInputValue = convertFullWidth(inputValue);
     const response = await fetch(
-      `${API.SEARCH_MULT}=10&type=${selectedValue}&searchText=${inputValue}`,
+      `${API.SEARCH_MULT}=10&type=${selectedValue}&searchText=${convertInputValue}`,
     );
 
     if (response.ok) {
       const searchResult = await response.json();
       setSearchResults(searchResult.rows);
+      console.log(searchResult);
     }
     // }
     setSearchTitle(inputValue);
@@ -59,7 +61,7 @@ export default function Page() {
         title='サイト内検索'
         description={Description.basic}
       />
-      <PageWrapper isGrid={false}>
+      <PageWrapper isGrid={true}>
         <H2Tag headingText='サイト内検索' isMore={false} />
         <p>
           検索したいキーワードを入力してください(複数の場合はスペース区切り)
@@ -76,7 +78,6 @@ export default function Page() {
                 className='w-[100px] md:w-[145px] text-[0.8rem] md:text-[1rem] py-4 px-2 md:px-4 appearance-none c_searchBox'
               >
                 <option value={1}>記事</option>
-                {/* <option value={2}>カテゴリ</option> */}
                 <option value={3}>お知らせ</option>
               </select>
 
@@ -101,33 +102,39 @@ export default function Page() {
           </form>
         </section>
         {/* 検索結果 */}
-        {isSearchArea && (
-          <section>
+        <section className='h-screen'>
+          {isSearchArea && (
             <div>
-              <h2 className='text-[1.4rem] font-bold'>
-                {searchTitle} の検索結果
-              </h2>
+              <div>
+                <h2 className='text-[1.4rem] font-bold'>
+                  {searchTitle} の検索結果
+                </h2>
+              </div>
+              {searchResults.length > 0 ? (
+                searchResults.map((data) => (
+                  <div key={data.path_id} className='my-4'>
+                    <h3 className='text-[1.1rem] text-blue-900  font-bold my-4'>
+                      <Link
+                        href={`/${selectedValue === '1' ? 'articles/' : selectedValue === '3' && 'notices/'}${data.path_id}`}
+                        className='border-blue-900 border-b-2'
+                      >
+                        {data.title}
+                      </Link>
+                    </h3>
+
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: simpleChangeHtml(data.content),
+                      }}
+                    />
+                  </div>
+                ))
+              ) : (
+                <>{searchTitle}は見つかりませんでした</>
+              )}
             </div>
-            {searchResults.length > 0 ? (
-              searchResults.map((data) => (
-                <div key={data.path_id} className='my-4'>
-                  <h3 className='text-[1.1rem] text-blue-900  font-bold my-4'>
-                    <Link
-                      href={`/${selectedValue === '1' ? 'articles/' : selectedValue === '3' && 'notices/'}${data.path_id}`}
-                      className='border-blue-900 border-b-2'
-                    >
-                      {data.title}
-                    </Link>
-                  </h3>
-                  <p>{data.content}</p>
-                </div>
-              ))
-            ) : (
-              <>{searchTitle}は見つかりませんでした</>
-            )}
-            <div></div>
-          </section>
-        )}
+          )}
+        </section>
       </PageWrapper>
     </>
   );
