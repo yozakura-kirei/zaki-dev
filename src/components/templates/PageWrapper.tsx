@@ -9,7 +9,7 @@ export default function PageWrapper({ children, isGrid }: PageWrapperProps) {
   return (
     <>
       {isGrid ? (
-        <main className='mt-[4rem] max-w-[1024px] m-auto px-6 pt-6 pb-[5rem] bg-BackGround text-neutral-800'>
+        <main className='mt-[4rem] max-w-[1024px] h-screen m-auto px-6 pt-6 pb-[5rem] bg-BackGround text-neutral-800'>
           {children}
         </main>
       ) : (

@@ -64,8 +64,6 @@ export default function Page({
               ? `${unixYMD(article.updated_at)}に更新`
               : `${unixYMD(article.created_at)}に公開`}
           </p>
-          {/* <p>{article.content}</p> */}
-
           <div
             className='md-container'
             dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}

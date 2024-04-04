@@ -1,6 +1,7 @@
 import markdownit, { Token } from 'markdown-it';
 import hljs from 'highlight.js';
 import Renderer from 'markdown-it/lib/renderer';
+import { trancateValue } from '../createValue';
 
 export function changeHtml(markdown: string) {
   const md: any = markdownit({
@@ -62,14 +63,15 @@ export function changeHtml(markdown: string) {
     return '<blockquote class="md-container__blockquote">';
   };
 
-  // リンクを別タブ
-  // const links = document.querySelectorAll('p a');
-  // if (links) {
-  //   links.forEach((link) => {
-  //     link.setAttribute('target', '_blank');
-  //     link.setAttribute('rel', 'noopener noreferrer');
-  //   });
-  // }
-
   return md.render(markdown);
+}
+
+export function simpleChangeHtml(markdown: string) {
+  const cleanedMd = markdown.replace(/\\|n|\n|#|-|\|/g, ' ');
+  const md = new markdownit({
+    html: true,
+    breaks: false,
+  });
+  const html = trancateValue(cleanedMd, 70);
+  return md.render('...' + html);
 }

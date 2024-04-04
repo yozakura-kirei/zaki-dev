@@ -6,6 +6,7 @@ import { API_RES_TYPE } from '@/types/api';
 import { Description } from '@/utils/common/site';
 import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { changeHtml } from '@/utils/md/changeHtml';
 
 interface NoticeIdPageProps {
   status: number;
@@ -28,7 +29,11 @@ export default function Page({ status = 200, notice }: NoticeIdPageProps) {
             <MiniCard categoryName={notice.name} />
           </div>
           {/* 内容 */}
-          <div>{notice.content}</div>
+          {/* <div>{notice.content}</div> */}
+          <div
+            className='md-container'
+            dangerouslySetInnerHTML={{ __html: changeHtml(notice.content) }}
+          />
         </div>
       </PageWrapper>
     </>
