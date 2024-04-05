@@ -23,8 +23,9 @@ export default function MetaData({
       {description && (
         <meta name='description' content={description} key='desc' />
       )}
-      <link rel='icon' href='/favicon.png' />
-      <link rel='apple-touch-icon' href='/favicon.png' />
+      <link rel='icon' href='/favicon.ico' />
+      <link rel='apple-touch-icon' sizes='180x180' href='/favicon.png' />
+      <link rel='stylesheet' href='' />
     </Head>
   );
 }
