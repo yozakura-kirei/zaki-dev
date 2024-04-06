@@ -1,10 +1,15 @@
-import markdownit, { Token } from 'markdown-it';
 import hljs from 'highlight.js';
 import Renderer from 'markdown-it/lib/renderer';
 import { trancateValue } from '../createValue';
+import MarkdownIt, { Token } from 'markdown-it';
 
+/**
+ * マークダウンをhtmlに変換し、クラスをつけて返却する
+ * @param markdown
+ * @returns
+ */
 export function changeHtml(markdown: string) {
-  const md: any = markdownit({
+  const md: MarkdownIt = MarkdownIt({
     html: true,
     linkify: true,
     typographer: true,
@@ -66,9 +71,14 @@ export function changeHtml(markdown: string) {
   return md.render(markdown);
 }
 
+/**
+ * 検索結果に表示されるマークダウンコンテンツをhtmlに変換
+ * @param markdown
+ * @returns
+ */
 export function simpleChangeHtml(markdown: string) {
   const cleanedMd = markdown.replace(/\\|n|\n|#|-|\|/g, ' ');
-  const md = new markdownit({
+  const md = new MarkdownIt({
     html: true,
     breaks: false,
   });
