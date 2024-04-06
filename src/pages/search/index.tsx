@@ -5,7 +5,7 @@ import { API_RES_TYPE } from '@/types/api';
 import { API } from '@/utils/common/path';
 import { Description } from '@/utils/common/site';
 import { convertFullWidth } from '@/utils/createValue';
-import { changeHtml, simpleChangeHtml } from '@/utils/md/changeHtml';
+import { simpleChangeHtml } from '@/utils/md/changeHtml';
 import Link from 'next/link';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
@@ -102,7 +102,7 @@ export default function Page() {
           </form>
         </section>
         {/* 検索結果 */}
-        <section className='h-screen'>
+        <section>
           {isSearchArea && (
             <div>
               <div>

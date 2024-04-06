@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabasetype';
-import { gql } from '@apollo/client';
 
 /**
  * supabaseのDBへアクセスする
