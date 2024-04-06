@@ -22,7 +22,7 @@ export default function Header() {
           />
           <h1>{SiteName}</h1>
         </Link>
-        <ul className='flex items-center justify-end text-[0.8rem] md:text-[1rem]'>
+        <ul className='flex items-center justify-end text-[0.9rem] md:text-[1rem]'>
           <Link href={'/search'}>
             <li className='flex items-center mr-4 md:mr-6 cursor-pointer'>
               <span className='mr-2'>
