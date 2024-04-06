@@ -46,7 +46,7 @@ export default function MetaData({
         href='/favicons/safari-pinned-tab.svg'
         color='#000000'
       />
-      <link rel='shortcut icon' href='/favicons/favicon.ico' />{' '}
+      <link rel='shortcut icon' href='/favicon.ico' />
       <meta name='msapplication-TileColor' content='#ffffff' />
       <meta
         name='msapplication-config'
