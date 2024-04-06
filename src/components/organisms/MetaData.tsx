@@ -48,13 +48,8 @@ export default function MetaData({
       />
       <link rel='shortcut icon' href='/favicon.ico' />
       <meta name='msapplication-TileColor' content='#ffffff' />
-      <meta
-        name='msapplication-config'
-        content='/favicons/browserconfig.xml'
-      />{' '}
+      <meta name='msapplication-config' content='/favicons/browserconfig.xml' />
       <meta name='theme-color' content='#ffffff' />
-      {/* <link rel='icon' href='/favicon.ico' />
-      <link rel='apple-touch-icon' sizes='180x180' href='/favicon.png' /> */}
     </Head>
   );
 }
