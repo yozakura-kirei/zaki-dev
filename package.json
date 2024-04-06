@@ -15,7 +15,8 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "compile": "graphql-codegen --require dotenv/config --config codegen.ts dotenv_config_path=.env.local"
+    "compile": "graphql-codegen --require dotenv/config --config codegen.ts dotenv_config_path=.env.local",
+    "ngrok": "ngrok http http://localhost:8888"
   },
   "dependencies": {
     "@as-integrations/next": "^3.0.0",
@@ -35,8 +36,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.1",
     "react-icons": "^5.0.1",
-    "sass": "^1.71.1",
-    "ngrok": "ngrok http http://localhost:8888"
+    "sass": "^1.71.1"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.6.17",
