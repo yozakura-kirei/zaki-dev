@@ -23,13 +23,17 @@ export default function Page({ status = 200, notice }: NoticeIdPageProps) {
       />
       <PageWrapper isGrid={false}>
         <div>
-          <h1>{notice.title}</h1>
+          {/* <h1>{notice.title}</h1> */}
+          <div className='bg-neutral-200 flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
+            <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
+              {notice && notice.title}
+            </h1>
+          </div>
           {/* カテゴリボタン */}
           <div className='flex flex-wrap gap-4 my-4'>
             <MiniCard categoryName={notice.name} />
           </div>
           {/* 内容 */}
-          {/* <div>{notice.content}</div> */}
           <div
             className='md-container'
             dangerouslySetInnerHTML={{ __html: changeHtml(notice.content) }}

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { selectQuery } from '@/utils/sql/pg';
 import { SQL } from '@/utils/sql/queries';
 import { COLUMNS } from '@/types/columns';
+import ArticleTitleCard from '@/components/atoms/ArticleTitleCard';
 
 interface TopPageProps {
   noticesCount: number;
@@ -39,32 +40,34 @@ export default function Page({
       <MetaData isTitle={true} description={Description.basic} />
       <PageWrapper isGrid={true}>
         <div className='grid grid-cols-1 gap-8'>
-          <div className=''>
+          <section className=''>
             <H2Tag headingText='お知らせ' isMore={true} path={PATH.NOTICES} />
             {noticesCount > 0 ? (
               notices.map((notice) => (
-                <Link
-                  key={notice.id}
-                  href={`/notices/${notice.notice_id}`}
-                  className='border-b-[0.8px] border-BorderGray mb-4 cursor-pointer hover:text-HoverGray'
-                >
-                  <p className='text-neutral-500 text-[0.7rem]'>
-                    {notice.updated_at
-                      ? unixYMD(notice.updated_at as number)
-                      : unixYMD(notice.created_at)}
-                  </p>
-                  <p className='font-medium'>・{notice.title}</p>
-                </Link>
+                <div key={notice.id} className='my-2'>
+                  <Link
+                    key={notice.id}
+                    href={`/notices/${notice.notice_id}`}
+                    className='block border-b-[0.8px] border-BorderGray cursor-pointer hover:text-HoverGray'
+                  >
+                    <p className='text-neutral-500 text-[0.7rem]'>
+                      {notice.updated_at
+                        ? unixYMD(notice.updated_at as number)
+                        : unixYMD(notice.created_at)}
+                    </p>
+                    <p className='font-medium'>・{notice.title}</p>
+                  </Link>
+                </div>
               ))
             ) : (
               <p>お知らせはありません。</p>
             )}
-          </div>
+          </section>
           {/* カテゴリエリア */}
-          <div className='my-4'>
+          <section className='my-4'>
             <H2Tag
               headingText='カテゴリー'
-              isMore={true}
+              isMore={false}
               path={PATH.CATEGORY}
             />
             <div className='flex flex-wrap gap-4 my-4'>
@@ -78,9 +81,9 @@ export default function Page({
                   />
                 ))}
             </div>
-          </div>
+          </section>
           {/* 記事エリア */}
-          <div className=''>
+          <section className=''>
             <H2Tag headingText='新着記事' isMore={true} path={PATH.ARTICLES} />
             {articlesCount > 0 ? (
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>
@@ -91,9 +94,7 @@ export default function Page({
                       href={`/articles/${article.article_id}`}
                     >
                       <section className='cursor-pointer hover:opacity-80 hover:transition-all text-[1.1rem] hover:text-[1.2rem]'>
-                        <div className='bg-BgNeutral p-4 rounded-2xl hover:shadow-md h-[10rem] flex justify-center items-center font-bold'>
-                          <h3 className='text-CardText'>{article.title}</h3>
-                        </div>
+                        <ArticleTitleCard data={article} />
                         <p className='text-neutral-500 text-[0.9rem] text-right mt-2'>
                           {article.updated_at
                             ? unixYMD(article.updated_at)
@@ -107,7 +108,7 @@ export default function Page({
             ) : (
               <p>記事を取得できませんでした</p>
             )}
-          </div>
+          </section>
         </div>
       </PageWrapper>
     </>

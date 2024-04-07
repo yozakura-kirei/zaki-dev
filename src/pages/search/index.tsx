@@ -113,10 +113,10 @@ export default function Page() {
               {searchResults.length > 0 ? (
                 searchResults.map((data) => (
                   <div key={data.path_id} className='my-4'>
-                    <h3 className='text-[1.1rem] text-blue-900  font-bold my-4'>
+                    <h3 className='text-[1.1rem] text-linkText  font-bold my-4'>
                       <Link
                         href={`/${selectedValue === '1' ? 'articles/' : selectedValue === '3' && 'notices/'}${data.path_id}`}
-                        className='border-blue-900 border-b-2'
+                        className='border-linkText border-b-2'
                       >
                         {data.title}
                       </Link>

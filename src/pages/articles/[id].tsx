@@ -9,6 +9,7 @@ import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
 import { changeHtml } from '@/utils/md/changeHtml';
+import ArticleTitleCard from '@/components/atoms/ArticleTitleCard';
 
 interface ArticleIdPageProps {
   status: number;
@@ -42,7 +43,7 @@ export default function Page({
       <PageWrapper isGrid={true}>
         <section className=''>
           {/* タイトル */}
-          <div className='bg-neutral-100 flex justify-center items-center py-10 rounded-xl mt-6 mb-8 shadow-sm'>
+          <div className='bg-neutral-200 flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
             <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
               {article && article.title}
             </h1>
