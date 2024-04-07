@@ -44,3 +44,10 @@ export function trancateValue(str: string, max: number) {
     return str.slice(0, max - 3) + '...';
   }
 }
+
+// UUIDかを判断
+export function isUUID(value: string) {
+  const UUIDPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return UUIDPattern.test(value);
+}
