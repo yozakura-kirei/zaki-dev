@@ -159,7 +159,7 @@ export default function Page() {
       {step === 1 && (
         <PageWrapper>
           <H2Tag headingText='確認画面' isMore={false} />
-          <section>
+          <section className=''>
             <div className='py-4'>
               <p>下記のお問い合わせ内容でよろしいでしょうか？</p>
             </div>
@@ -173,7 +173,7 @@ export default function Page() {
                   <MiniLabel text='メールアドレス' />
                   {contactData.email}
                 </li>
-                <li className='py-4 whitespace-pre'>
+                <li className='py-4 whitespace-pre-wrap break-words'>
                   <MiniLabel text='お問い合わせ内容' />
                   <br />
                   <div className='mt-4'>{contactData.contact_detail}</div>

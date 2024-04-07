@@ -7,6 +7,7 @@ import { Description } from '@/utils/common/site';
 import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { changeHtml } from '@/utils/md/changeHtml';
+import BreadCrumb from '@/components/molecules/Breadcrumb';
 
 interface NoticeIdPageProps {
   status: number;
@@ -22,9 +23,9 @@ export default function Page({ status = 200, notice }: NoticeIdPageProps) {
         description={Description.basic}
       />
       <PageWrapper isGrid={false}>
-        <div>
-          {/* <h1>{notice.title}</h1> */}
-          <div className='bg-neutral-200 flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
+        <section>
+          <BreadCrumb title={notice.title} />
+          <div className='bg-BgNeutral flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
             <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
               {notice && notice.title}
             </h1>
@@ -38,7 +39,7 @@ export default function Page({ status = 200, notice }: NoticeIdPageProps) {
             className='md-container'
             dangerouslySetInnerHTML={{ __html: changeHtml(notice.content) }}
           />
-        </div>
+        </section>
       </PageWrapper>
     </>
   );

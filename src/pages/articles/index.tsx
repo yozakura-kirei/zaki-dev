@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { COLUMNS } from '@/types/columns';
 import ArticleTitleCard from '@/components/atoms/ArticleTitleCard';
 import { Fragment } from 'react';
+import BreadCrumb from '@/components/molecules/Breadcrumb';
 
 interface ArticlePageProps {
   articlesCount: number;
@@ -31,6 +32,7 @@ export default function Page({ articlesCount, articles }: ArticlePageProps) {
         description={Description.basic}
       />
       <PageWrapper isGrid={true}>
+        <BreadCrumb title='' />
         <H2Tag headingText='記事一覧' isMore={false} />
         {articlesCount > 0 ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>

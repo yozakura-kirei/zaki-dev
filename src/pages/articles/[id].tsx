@@ -41,10 +41,10 @@ export default function Page({
         description={Description.basic}
       />
       <PageWrapper isGrid={true}>
-        <section className=''>
-          <BreadCrumb />
+        <section>
+          <BreadCrumb title={article.title} />
           {/* タイトル */}
-          <div className='bg-neutral-200 flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
+          <div className='bg-BgNeutral flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
             <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
               {article && article.title}
             </h1>

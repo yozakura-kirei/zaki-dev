@@ -17,7 +17,7 @@ const config: Config = {
         HoverGray: '#a3a3a3',
         BgNeutral: '#f3eee6',
         CardText: '#404040',
-        linkText: '#075985',
+        linkText: '#0369a1',
       },
       fontFamily: {
         Basic: [
