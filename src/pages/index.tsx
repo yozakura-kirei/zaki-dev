@@ -88,7 +88,7 @@ export default function Page({
             {articlesCount > 0 ? (
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 gap-8'>
                 <>
-                  {articles.map((article) => (
+                  {articles.map((article, index) => (
                     <Link
                       key={article.id}
                       href={`/articles/${article.article_id}`}

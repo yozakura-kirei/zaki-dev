@@ -9,7 +9,7 @@ import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
 import { changeHtml } from '@/utils/md/changeHtml';
-import ArticleTitleCard from '@/components/atoms/ArticleTitleCard';
+import BreadCrumb from '@/components/molecules/Breadcrumb';
 
 interface ArticleIdPageProps {
   status: number;
@@ -42,12 +42,14 @@ export default function Page({
       />
       <PageWrapper isGrid={true}>
         <section className=''>
+          <BreadCrumb />
           {/* タイトル */}
           <div className='bg-neutral-200 flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
             <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
               {article && article.title}
             </h1>
           </div>
+
           {/* カテゴリボタン */}
           <div className='flex flex-wrap gap-4 my-6'>
             {article &&
