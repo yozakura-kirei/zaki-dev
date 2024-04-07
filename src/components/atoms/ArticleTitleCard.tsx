@@ -41,9 +41,9 @@ export default function ArticleTitleCard({
           )}
         </div>
         <div className='overflow-hidden min-h-[1.9rem] max-h-[1.8rem] flex justify-end items-end text-[0.9rem]'>
-          {categoriesSplit(data.categories).map((category) => (
+          {categoriesSplit(data.categories).map((category, index) => (
             <div
-              key={data.id}
+              key={index}
               className='bg-blue-400 text-White ml-2 py-1 px-2 flex justify-center items-center rounded-lg shadow-sm'
             >
               {category}
