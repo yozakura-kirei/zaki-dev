@@ -9,6 +9,7 @@ import { SQL } from '@/utils/sql/queries';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { COLUMNS } from '@/types/columns';
+import ArticleTitleCard from '@/components/atoms/ArticleTitleCard';
 
 interface ArticlePageProps {
   articlesCount: number;
@@ -35,11 +36,9 @@ export default function Page({ articlesCount, articles }: ArticlePageProps) {
             <>
               {articles.map((article) => (
                 <Link key={article.id} href={`/articles/${article.article_id}`}>
-                  <section className='cursor-pointer hover:opacity-80 hover:transition-all text-[1.1rem] hover:text-[1.2rem]'>
-                    <div className='bg-BgNeutral p-4 rounded-2xl hover:shadow-md h-[10rem] flex justify-center items-center font-bold'>
-                      <h3 className='text-CardText'>{article.title}</h3>
-                    </div>
-                    <p className='text-neutral-500 text-[0.9rem] text-right'>
+                  <section className='cursor-pointer hover:opacity-80 hover:transition-all'>
+                    <ArticleTitleCard data={article} type={2} />
+                    <p className='text-neutral-500 text-[0.9rem] text-right mt-2'>
                       {article.updated_at
                         ? unixYMD(article.updated_at)
                         : unixYMD(article.created_at)}

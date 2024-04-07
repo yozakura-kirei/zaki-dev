@@ -134,7 +134,7 @@ export default function Page() {
                     href={'/c/privacy'}
                     rel='noopener noreferrer'
                     target='_blank'
-                    className='text-blue-600 font-semibold border-b-2 border-blue-600'
+                    className='text-linkText font-semibold border-b-2 border-linkText'
                   >
                     個人情報の取り扱い
                   </Link>

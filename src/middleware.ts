@@ -13,8 +13,8 @@ export const config = {
  */
 export function middleware(req: NextRequest) {
   if (
-    process.env.CURRENT_STAGE !== 'local'
-    // process.env.CURRENT_STAGE === 'prd'
+    // process.env.CURRENT_STAGE !== 'local'
+    process.env.CURRENT_STAGE === 'prd'
   ) {
     const basicAuth = req.headers.get('Authorization');
     if (basicAuth) {
