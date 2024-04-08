@@ -10,10 +10,12 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
 import { changeHtml } from '@/utils/md/changeHtml';
 import BreadCrumb from '@/components/molecules/Breadcrumb';
+import { getFloatingLinks, getOgpData } from '@/utils/md/getOgpData';
 
 interface ArticleIdPageProps {
   status: number;
   article: API_RES_TYPE['articles'];
+  ogpDatas?: any;
 }
 
 /**
@@ -24,6 +26,7 @@ interface ArticleIdPageProps {
 export default function Page({
   status,
   article = INIT['articles'],
+  ogpDatas,
 }: ArticleIdPageProps) {
   // カテゴリ名とサーチネームをオブジェクトに変換
   let categoryObj = null;
@@ -91,9 +94,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const response = {
+  const response: {
+    status: number;
+    article: API_RES_TYPE['articles'];
+    ogpDatas?: any;
+  } = {
     status: 200,
-    article: {},
+    article: INIT['articles'],
+    ogpDatas: [],
   };
 
   try {
@@ -101,6 +109,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const article = await selectQuery(SQL.selectArticleId, [params.id, 1]);
       if (article.count > 0) {
         response.article = article.rows[0];
+
+        // // リンクカード生成
+        // const floatLink = getFloatingLinks(response.article.content);
+        // const ogpDatas = await getOgpData(floatLink);
+        // if (ogpDatas.length > 0) {
+        //   response.ogpDatas = ogpDatas;
+        // }
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {
