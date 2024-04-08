@@ -8,6 +8,8 @@ import { createCategoryObj, unixYMD } from '@/utils/createValue';
 import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
+import { changeHtml } from '@/utils/md/changeHtml';
+import BreadCrumb from '@/components/molecules/Breadcrumb';
 
 interface ArticleIdPageProps {
   status: number;
@@ -38,13 +40,18 @@ export default function Page({
         title={`${article && article.title}の記事`}
         description={Description.basic}
       />
-      <PageWrapper isGrid={false}>
-        <div>
-          <h1 className='font-bold text-[1.2rem] my-4'>
-            {article && article.title}
-          </h1>
+      <PageWrapper isGrid={true}>
+        <section>
+          <BreadCrumb title={article.title} />
+          {/* タイトル */}
+          <div className='bg-BgNeutral flex justify-center items-center px-4 py-10 rounded-xl mt-6 mb-8 shadow-sm h-[11rem]'>
+            <h1 className='font-bold text-[1.3rem] md:text-[1.5rem] my-4'>
+              {article && article.title}
+            </h1>
+          </div>
+
           {/* カテゴリボタン */}
-          <div className='flex flex-wrap gap-4 my-4'>
+          <div className='flex flex-wrap gap-4 my-6'>
             {article &&
               categoryObj &&
               categoryObj.map((category) => (
@@ -55,13 +62,16 @@ export default function Page({
                 />
               ))}
           </div>
-          <p className='my-4'>
+          <p className='my-6 flex justify-end items-center text-neutral-600'>
             {article && article.updated_at
               ? `${unixYMD(article.updated_at)}に更新`
               : `${unixYMD(article.created_at)}に公開`}
           </p>
-          <p>{article.content}</p>
-        </div>
+          <div
+            className='md-container'
+            dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
+          />
+        </section>
       </PageWrapper>
     </>
   );

@@ -6,7 +6,7 @@ dayjs.extend(advancedFormat);
 
 // unix時間を年月日にフォーマット
 export function unixYMD(value: number) {
-  return dayjs(value).format('YYYY-MM-DD');
+  return dayjs.unix(value / 1000).format('YYYY-MM-DD');
 }
 
 // 日本時間のミリ秒単位で現在のunix時間を返却
@@ -34,4 +34,20 @@ export function createCategoryObj(categories: string, searchName: string) {
   );
 
   return categoriesObj;
+}
+
+// 文字数フォーマット
+export function trancateValue(str: string, max: number) {
+  if (str.length <= max) {
+    return str;
+  } else {
+    return str.slice(0, max - 3) + '...';
+  }
+}
+
+// UUIDかを判断
+export function isUUID(value: string) {
+  const UUIDPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return UUIDPattern.test(value);
 }

@@ -7,6 +7,8 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import { selectArticleCategories, selectQuery } from '@/utils/sql/pg';
 import { SQL } from '@/utils/sql/queries';
+import { simpleChangeHtml } from '@/utils/md/changeHtml';
+import React from 'react';
 
 interface PageProps {
   status: number;
@@ -29,10 +31,22 @@ export default function Page({ categoryArticle }: PageProps) {
         <div>
           {categoryArticle.count > 0 ? (
             categoryArticle.data.map((article) => (
-              <Link key={article.id} href={`/articles/${article.article_id}`}>
-                <h3>{article.title}</h3>
-                <p>{article.content}</p>
-              </Link>
+              <React.Fragment key={article.id}>
+                <h3 className='text-[1.1rem] text-blue-900  font-bold my-4'>
+                  <Link
+                    href={`/articles/${article.article_id}`}
+                    className='border-blue-900 border-b-2'
+                  >
+                    {article.title}
+                  </Link>
+                </h3>
+                {/* <p>{article.content}</p> */}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: simpleChangeHtml(article.content),
+                  }}
+                />
+              </React.Fragment>
             ))
           ) : (
             <>お探しのカテゴリー記事は見つかりませんでした</>

@@ -1,6 +1,7 @@
 import ErrorMessage from '@/components/atoms/ErrorMessage';
 import H2Tag from '@/components/atoms/H2Tag';
 import MiniCard from '@/components/atoms/MiniCard';
+import MiniLabel from '@/components/atoms/MiniLabel';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
 import { API, PATH } from '@/utils/common/path';
@@ -133,7 +134,7 @@ export default function Page() {
                     href={'/c/privacy'}
                     rel='noopener noreferrer'
                     target='_blank'
-                    className='text-blue-600 font-semibold border-b-2 border-blue-600'
+                    className='text-linkText font-semibold border-b-2 border-linkText'
                   >
                     個人情報の取り扱い
                   </Link>
@@ -147,7 +148,7 @@ export default function Page() {
               </div>
               <button
                 type='submit'
-                className='bg-blue-600 text-White py-2 px-6 rounded-xl'
+                className='bg-blue-600 text-White py-2 px-6 rounded-xl hover:opacity-80'
               >
                 確認画面へ
               </button>
@@ -156,40 +157,59 @@ export default function Page() {
         </PageWrapper>
       )}
       {step === 1 && (
-        <PageWrapper isGrid={false}>
+        <PageWrapper>
           <H2Tag headingText='確認画面' isMore={false} />
-          <p>下記のお問い合わせ内容でよろしいでしょうか？</p>
-          <div>
-            {contactData.name}
-            <p>{contactData.email}</p>
-            <p>{contactData.contact_detail}</p>
-          </div>
-          <button
-            type='submit'
-            className='bg-gray-600 text-White py-2 px-6 rounded-xl'
-            onClick={() => setStep(0)}
-          >
-            戻る
-          </button>
-          <button
-            type='submit'
-            className='bg-blue-600 text-White py-2 px-6 rounded-xl'
-            onClick={submitContact}
-          >
-            問い合わせる
-          </button>
+          <section className=''>
+            <div className='py-4'>
+              <p>下記のお問い合わせ内容でよろしいでしょうか？</p>
+            </div>
+            <div className='pt-4 pb-8'>
+              <ul>
+                <li className='py-4'>
+                  <MiniLabel text='お名前' />
+                  {contactData.name}
+                </li>
+                <li className='py-4'>
+                  <MiniLabel text='メールアドレス' />
+                  {contactData.email}
+                </li>
+                <li className='py-4 whitespace-pre-wrap break-words'>
+                  <MiniLabel text='お問い合わせ内容' />
+                  <br />
+                  <div className='mt-4'>{contactData.contact_detail}</div>
+                </li>
+              </ul>
+            </div>
+            <button
+              type='submit'
+              className='bg-gray-600 text-White py-2 px-6 rounded-xl mr-4 hover:opacity-80'
+              onClick={() => setStep(0)}
+            >
+              戻る
+            </button>
+            <button
+              type='submit'
+              className='bg-blue-600 text-White py-2 px-6 rounded-xl hover:opacity-80'
+              onClick={submitContact}
+            >
+              問い合わせる
+            </button>
+          </section>
         </PageWrapper>
       )}
       {step === 2 && (
         <PageWrapper isGrid={false}>
           <H2Tag headingText='お問い合わせ完了' isMore={false} />
-          <p>お問い合わせいただきありがとうございました。</p>
-          <p>
-            いただいたお問い合わせは必要に応じて順次対応・参考とさせていただきます。
-          </p>
-          <Link href={PATH.ROOT} className='w-[12rem] text-center my-4'>
-            <MiniCard categoryName='トップページへ戻る' />
-          </Link>
+          <section className='my-6'>
+            <p className='my-8'>
+              お問い合わせいただきありがとうございました。
+              <br />
+              いただいたお問い合わせは必要に応じて順次対応・参考とさせていただきます。
+            </p>
+            <Link href={PATH.ROOT} className='w-[12rem] text-center my-4'>
+              <MiniCard categoryName='トップページへ戻る' />
+            </Link>
+          </section>
         </PageWrapper>
       )}
     </>

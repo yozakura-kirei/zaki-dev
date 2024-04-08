@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'highlight.js/styles/vs2015.css';
+
+// md
+@import "@/styles/_md.scss";
 
 .c_searchBox {
   background-image: url('/icons/down.svg');
