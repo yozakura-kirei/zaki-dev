@@ -46,7 +46,7 @@ export default function Page() {
     if (response.ok) {
       const searchResult = await response.json();
       setSearchResults(searchResult.rows);
-      console.log(searchResult);
+      // console.log(searchResult);
     }
     // }
     setSearchTitle(inputValue);

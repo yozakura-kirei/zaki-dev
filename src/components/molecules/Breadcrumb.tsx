@@ -53,8 +53,6 @@ export default function BreadCrumb({ title }: { title: string }) {
   // json-ld形式のパンくずリスト作成
   const jsonLdData = generateBreadCrumbList(breadCrumbItems);
 
-  console.log(jsonLdData);
-
   return (
     <div>
       <nav className=''>

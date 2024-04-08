@@ -12,6 +12,6 @@ export function localMdChangeHtml(filePath: string): any {
     'utf-8',
   );
   const result = changeHtml(markdown);
-  console.log(result);
+  // console.log(result);
   return result;
 }
