@@ -36,4 +36,4 @@ zaki-dev.comは、zaki-devが運営するWebサイトです(以下、「当ウ�
 
 本ポリシーに関する問い合わせについては下記の問い合わせフォームよりお願い致します。
 
-[問い合わせ](https://zaki-dev.com/contact)
+[問い合わせ](https://zaki-dev.com/contacts)
