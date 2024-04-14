@@ -1,7 +1,6 @@
 import H2Tag from '@/components/atoms/H2Tag';
 import MetaData from '@/components/organisms/MetaData';
 import PageWrapper from '@/components/templates/PageWrapper';
-// import { staticPageHtml } from '@/utils/md/changeHtml';
 import { localMdChangeHtml } from '@/utils/md/changeLocalMd';
 
 /**

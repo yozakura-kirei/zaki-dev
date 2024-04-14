@@ -10,12 +10,11 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
 import { changeHtml } from '@/utils/md/changeHtml';
 import BreadCrumb from '@/components/molecules/Breadcrumb';
-import { getFloatingLinks, getOgpData } from '@/utils/md/getOgpData';
+import { extractLinks, getOgpData } from '@/utils/md/getOgpData';
 
 interface ArticleIdPageProps {
   status: number;
   article: API_RES_TYPE['articles'];
-  ogpDatas?: any;
 }
 
 /**
@@ -26,7 +25,6 @@ interface ArticleIdPageProps {
 export default function Page({
   status,
   article = INIT['articles'],
-  ogpDatas,
 }: ArticleIdPageProps) {
   // カテゴリ名とサーチネームをオブジェクトに変換
   let categoryObj = null;
@@ -72,7 +70,7 @@ export default function Page({
           </p>
           <div
             className='md-container'
-            dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
+            dangerouslySetInnerHTML={{ __html: article.content }}
           />
         </section>
       </PageWrapper>
@@ -97,11 +95,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response: {
     status: number;
     article: API_RES_TYPE['articles'];
-    ogpDatas?: any;
   } = {
     status: 200,
     article: INIT['articles'],
-    ogpDatas: [],
   };
 
   try {
@@ -110,12 +106,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       if (article.count > 0) {
         response.article = article.rows[0];
 
-        // // リンクカード生成
-        // const floatLink = getFloatingLinks(response.article.content);
-        // const ogpDatas = await getOgpData(floatLink);
-        // if (ogpDatas.length > 0) {
-        //   response.ogpDatas = ogpDatas;
-        // }
+        // リンクカード生成
+        const floatLink = extractLinks(response.article.content ?? '');
+        const ogpDatas = await getOgpData(floatLink);
+
+        // マークダウンをhtmlに変換
+        const htmlContent = changeHtml(
+          response.article.content ?? '',
+          ogpDatas,
+        );
+        response.article.content = htmlContent;
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {

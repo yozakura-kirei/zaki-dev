@@ -1,18 +1,41 @@
 import ogs from 'open-graph-scraper';
 
+export interface OgpDataRes {
+  twitterCard: string;
+  ogUrl: string;
+  ogTitle: string;
+  ogType: string;
+  ogSiteName: string;
+  ogImage: [
+    {
+      url: string;
+      type: string;
+      alt?: string;
+    },
+  ];
+  ogLocale: string;
+  favicon: string;
+  charset: string;
+  requestUrl: string;
+  success: boolean;
+}
+
 /**
  * リンク先の情報を取得する
  * @param url
  */
-export async function getOgpData(floatLinks: string[]) {
+export async function getOgpData(
+  autolink: string[],
+): Promise<OgpDataRes[] | undefined> {
   let res: any = [];
 
-  if (floatLinks.length === 0) {
+  if (autolink.length === 0) {
     return res;
   }
+  if (!autolink) return;
 
-  const result = await Promise.all(
-    floatLinks.map(async (link) => {
+  await Promise.all(
+    autolink.map(async (link) => {
       const { error, html, result, response } = await ogs({ url: link });
 
       // エラー時とデータ取得失敗の際
@@ -26,21 +49,20 @@ export async function getOgpData(floatLinks: string[]) {
         return response;
       }
 
-      // OGPデータ取得に成功
+      // OGPデータ取得に成功;
       res.push(result);
     }),
   );
 
-  // console.log('レスポンス', res);
   return res;
 }
 
 /**
- * mdから直書きのリンクのみを配列に入れる
+ * mdから直書きのリンクを取得し配列に入れる
  * @param md マークダウン
  * @returns
  */
-export function getFloatingLinks(md: string) {
+export function extractLinks(md: string) {
   const regFloatLink =
     /(?<!\()https?:\/\/[-_.!~*\\'()a-zA-Z0-9;\\/?:\\@&=+\\$,%#]+/g;
   const floatLinks = md.match(regFloatLink);
