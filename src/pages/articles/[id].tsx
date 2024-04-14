@@ -15,7 +15,6 @@ import { extractLinks, getOgpData } from '@/utils/md/getOgpData';
 interface ArticleIdPageProps {
   status: number;
   article: API_RES_TYPE['articles'];
-  ogpDatas?: any;
 }
 
 /**
@@ -26,7 +25,6 @@ interface ArticleIdPageProps {
 export default function Page({
   status,
   article = INIT['articles'],
-  ogpDatas,
 }: ArticleIdPageProps) {
   // カテゴリ名とサーチネームをオブジェクトに変換
   let categoryObj = null;
@@ -70,12 +68,6 @@ export default function Page({
               ? `${unixYMD(article.updated_at)}に更新`
               : `${unixYMD(article.created_at)}に公開`}
           </p>
-          {/* <div
-            className='md-container'
-            dangerouslySetInnerHTML={{
-              __html: changeHtml(article.content, ogpDatas),
-            }}
-          /> */}
           <div
             className='md-container'
             dangerouslySetInnerHTML={{ __html: article.content }}
@@ -103,11 +95,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response: {
     status: number;
     article: API_RES_TYPE['articles'];
-    ogpDatas?: any;
   } = {
     status: 200,
     article: INIT['articles'],
-    ogpDatas: [],
   };
 
   try {
@@ -119,9 +109,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         // リンクカード生成
         const floatLink = extractLinks(response.article.content ?? '');
         const ogpDatas = await getOgpData(floatLink);
-        if (ogpDatas && ogpDatas.length > 0) {
-          response.ogpDatas = ogpDatas;
-        }
 
         // マークダウンをhtmlに変換
         const htmlContent = changeHtml(

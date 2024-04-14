@@ -8,6 +8,8 @@ import { SQL } from '@/utils/sql/queries';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { changeHtml } from '@/utils/md/changeHtml';
 import BreadCrumb from '@/components/molecules/Breadcrumb';
+import { INIT } from '@/types/init';
+import { extractLinks, getOgpData } from '@/utils/md/getOgpData';
 
 interface NoticeIdPageProps {
   status: number;
@@ -37,7 +39,7 @@ export default function Page({ status = 200, notice }: NoticeIdPageProps) {
           {/* 内容 */}
           <div
             className='md-container'
-            dangerouslySetInnerHTML={{ __html: changeHtml(notice.content) }}
+            dangerouslySetInnerHTML={{ __html: notice.content }}
           />
         </section>
       </PageWrapper>
@@ -59,9 +61,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const response = {
+  const response: {
+    status: number;
+    notice: API_RES_TYPE['notices'];
+  } = {
     status: 200,
-    notice: {},
+    notice: INIT['notices'],
   };
 
   try {
@@ -71,6 +76,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       ]);
       if (count > 0) {
         response.notice = rows[0];
+
+        // リンクカード生成
+        const floatLink = extractLinks(response.notice.content ?? '');
+        const ogpDatas = await getOgpData(floatLink);
+
+        // マークダウンをhtmlに変換
+        const htmlContent = changeHtml(response.notice.content ?? '', ogpDatas);
+        response.notice.content = htmlContent;
       } else {
         // お知らせが見つからない場合は404ページにリダイレクト
         return {
