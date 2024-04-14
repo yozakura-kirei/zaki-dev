@@ -10,7 +10,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { selectQuery } from '@/utils/sql/pg';
 import { changeHtml } from '@/utils/md/changeHtml';
 import BreadCrumb from '@/components/molecules/Breadcrumb';
-import { getFloatingLinks, getOgpData } from '@/utils/md/getOgpData';
+import { extractLinks, getOgpData } from '@/utils/md/getOgpData';
 
 interface ArticleIdPageProps {
   status: number;
@@ -70,9 +70,15 @@ export default function Page({
               ? `${unixYMD(article.updated_at)}に更新`
               : `${unixYMD(article.created_at)}に公開`}
           </p>
+          {/* <div
+            className='md-container'
+            dangerouslySetInnerHTML={{
+              __html: changeHtml(article.content, ogpDatas),
+            }}
+          /> */}
           <div
             className='md-container'
-            dangerouslySetInnerHTML={{ __html: changeHtml(article.content) }}
+            dangerouslySetInnerHTML={{ __html: article.content }}
           />
         </section>
       </PageWrapper>
@@ -110,12 +116,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       if (article.count > 0) {
         response.article = article.rows[0];
 
-        // // リンクカード生成
-        // const floatLink = getFloatingLinks(response.article.content);
-        // const ogpDatas = await getOgpData(floatLink);
-        // if (ogpDatas.length > 0) {
-        //   response.ogpDatas = ogpDatas;
-        // }
+        // リンクカード生成
+        const floatLink = extractLinks(response.article.content ?? '');
+        console.log('mdのリンク', floatLink);
+        const ogpDatas = await getOgpData(floatLink);
+        // console.log('ogpです', ogpDatas);
+        if (ogpDatas && ogpDatas.length > 0) {
+          response.ogpDatas = ogpDatas;
+        }
+
+        // マークダウンをhtmlに変換
+        const htmlContent = changeHtml(
+          response.article.content ?? '',
+          ogpDatas,
+        );
+        console.log('htmlになったマークダウン', htmlContent);
+        response.article.content = htmlContent;
+        // マークダウンをhtmlへ変換
+        // const html = changeHtml(article.rows[0]);
+        // // リンクを抽出
+        // const links = extractLinks(html);
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {
