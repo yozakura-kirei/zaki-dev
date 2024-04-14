@@ -2,6 +2,9 @@ import hljs from 'highlight.js';
 import Renderer from 'markdown-it/lib/renderer';
 import { trancateValue } from '../createValue';
 import MarkdownIt, { Token } from 'markdown-it';
+import StateInline from 'markdown-it/lib/rules_inline/state_inline';
+import { RuleInline } from 'markdown-it/lib/parser_inline';
+import { linkCard } from './linkCard';
 
 /**
  * マークダウンをhtmlに変換し、クラスをつけて返却する
@@ -34,8 +37,10 @@ export function changeHtml(markdown: string, ogpDatas?: any) {
     },
   });
 
+  md.linkify.set({ fuzzyLink: false });
+
   // hタグをそれぞれでクラスを追加
-  md.renderer.rules.heading_open = (
+  const defaultRenderer = (md.renderer.rules.heading_open = (
     tokens: Token[],
     idx: number,
     options: {},
@@ -58,7 +63,7 @@ export function changeHtml(markdown: string, ogpDatas?: any) {
     }
 
     return self.renderToken(tokens, idx, options);
-  };
+  });
 
   md.renderer.rules.table_open = () => {
     return '<table class="md-container__table">';
@@ -68,49 +73,21 @@ export function changeHtml(markdown: string, ogpDatas?: any) {
     return '<blockquote class="md-container__blockquote">';
   };
 
-  // リンクカード
+  // リンクは別タブで開くルールを追加
+  md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    const aIndex = tokens[idx].attrIndex('target');
+
+    if (aIndex < 0) {
+      tokens[idx].attrPush(['target', '_blank']);
+    }
+
+    // このトークンをデフォルトに渡す
+    return defaultRenderer(tokens, idx, options, env, self);
+  };
+
+  // 自作プラグイン
   if (ogpDatas) {
-    // md.renderer.rules.link_open = (
-    //   tokens: Token[],
-    //   idx: number,
-    //   options: {},
-    //   env: {},
-    //   self: any,
-    // ) => {
-    //   const token = tokens[idx];
-    //   const hrefAttrIndex = token.attrIndex('href'); // href属性のindexを取得
-    //   if (hrefAttrIndex !== -1) {
-    //     ogpDatas.forEach((ogp: any) => {
-    //       const { ogTitle, ogDescription, ogImage } = ogp;
-    //       console.log('OGPデータ', ogp);
-    //       const linkCardHtml = `<div class="md-link_card"><a href="${'/'}" target="_blank" rel="noopener noreferrer"><h2>${ogTitle}</h2>${ogDescription && `<p>${ogDescription}</p>`}${ogImage && `<img src="${ogImage[0].url}" alt="${ogTitle}" />`}</a></div>`;
-    //       console.log('リンクカード', linkCardHtml);
-    //       return linkCardHtml;
-    //     });
-    //     // }
-    //   }
-    // };
-    // md.renderer.rules.link_open = (
-    //   tokens: Token[],
-    //   idx: number,
-    //   options: {},
-    //   env: {},
-    //   self: any,
-    // ) => {
-    //   console.log('セルフ？？', self);
-    //   const token = tokens[idx];
-    //   const hrefAttrIndex = token.attrIndex('href');
-    //   if (hrefAttrIndex !== -1) {
-    //     ogpDatas.forEach((ogp: any) => {
-    //       const { ogTitle, ogDescription, ogImage } = ogp;
-    //       console.log('OGPデータ', ogp);
-    //       const linkCardHtml = `<div class="md-link_card"><a href="${'/'}" target="_blank" rel="noopener noreferrer"><h2>${ogTitle}</h2>${ogDescription && `<p>${ogDescription}</p>`}${ogImage && `<img src="${ogImage[0].url}" alt="${ogTitle}" />`}</a></div>`;
-    //       console.log('リンクカード', linkCardHtml);
-    //       tokens[idx + 1].content = linkCardHtml + tokens[idx + 1].content; // リンクの後にHTMLを挿入
-    //     });
-    //   }
-    //   return self.renderToken(tokens, idx, options);
-    // };
+    md.use(linkCard, ogpDatas);
   }
 
   const result = md.render(markdown);
