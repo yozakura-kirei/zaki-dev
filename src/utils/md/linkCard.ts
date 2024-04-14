@@ -1,9 +1,6 @@
-import Token from 'markdown-it/lib/token';
 import MarkdownIt from 'markdown-it';
-import ogs from 'open-graph-scraper';
-import { OgpDataRes, getOgpData } from './getOgpData';
-import cheerio from 'cheerio';
-// import { getOgpData } from './getOgpData';
+import { OgpDataRes } from './getOgpData';
+import { trancateValue } from '../createValue';
 
 /**
  * 直書きリンクをリンクカードに変換する
@@ -14,11 +11,8 @@ export function linkCard(md: MarkdownIt, ogpDatas: OgpDataRes[]) {
     let allowLevel = 0;
     // https://から始まるリンクのみが対象
     const linkRegex = /^https:\/\//;
-    console.log('オプション後');
     // tokensは配列
     tokens.forEach((token, i) => {
-      // for (let i = 0; i < tokens.length; i++) {
-      // const token = tokens[i];
       // autolinkはinlineのchildrenにのみ存在するのでそれ以外は除外
       if (token.type !== 'inline') return;
 
@@ -38,7 +32,6 @@ export function linkCard(md: MarkdownIt, ogpDatas: OgpDataRes[]) {
       if (!isParentRootParagraph) return;
 
       // リンクカードの生成
-      // for (const child of token.children) {
       token.children.forEach((child) => {
         if (
           child.content &&
@@ -46,23 +39,18 @@ export function linkCard(md: MarkdownIt, ogpDatas: OgpDataRes[]) {
           child.markup !== 'linkify' &&
           linkRegex.test(child.content)
         ) {
-          console.log('リンクのみ', child.content);
-
-          // ogpDataがある場合はリンクカードを生成する
-          const linkUrl = child.content.trim();
-          console.log('リンクURL', linkUrl);
+          // ogpDataのリンクと同じ場合htmlを生成する
           const ogpData = ogpDatas.find((data) => {
-            // console.log('findデータ', data);
             return data.ogUrl === child.content;
           });
-          console.log('これで見つかったか？', ogpData);
+          console.log(ogpData);
 
           if (ogpData) {
             child.content = `
-              <div class="md-link-card">
-                <div>
-                  <h1>${ogpData.ogTitle}</h1>
-                  <div>
+              <section class="md-link-card">
+                <div class="og-text">
+                  <h1>${trancateValue(ogpData.ogTitle, 50)}</h1>
+                  <div class="og-text__icon">
                     ${
                       ogpData.favicon
                         ? `<img src="${ogpData.favicon ?? 'リンクカードのfaviconです'}" />`
@@ -71,21 +59,17 @@ export function linkCard(md: MarkdownIt, ogpDatas: OgpDataRes[]) {
                     <p>${ogpData.ogSiteName}</p>
                   </div>
                 </div>
-                <div>
+                <div class="og-img">
                   <img src="${ogpData.ogImage[0].url}" alt="${ogpData.ogImage[0].alt ?? 'リンクカードのイメージです'}">
                 </div>
-              </div>
+              </section>
             `;
             child.type = 'html_block';
-            console.log('html変換後', child.content);
           }
         }
       });
-      console.log('最初の処理の最終');
     });
-    console.log('最終処理');
   });
 
-  console.log('リンクカードの最終');
   return true;
 }

@@ -118,9 +118,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
         // リンクカード生成
         const floatLink = extractLinks(response.article.content ?? '');
-        console.log('mdのリンク', floatLink);
         const ogpDatas = await getOgpData(floatLink);
-        // console.log('ogpです', ogpDatas);
         if (ogpDatas && ogpDatas.length > 0) {
           response.ogpDatas = ogpDatas;
         }
@@ -130,12 +128,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           response.article.content ?? '',
           ogpDatas,
         );
-        console.log('htmlになったマークダウン', htmlContent);
         response.article.content = htmlContent;
-        // マークダウンをhtmlへ変換
-        // const html = changeHtml(article.rows[0]);
-        // // リンクを抽出
-        // const links = extractLinks(html);
       } else {
         // 記事が見つからない場合は404ページにリダイレクト
         return {

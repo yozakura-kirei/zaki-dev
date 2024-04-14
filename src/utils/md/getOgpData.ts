@@ -54,7 +54,6 @@ export async function getOgpData(
     }),
   );
 
-  // console.log('レスポンス', res);
   return res;
 }
 
@@ -70,43 +69,3 @@ export function extractLinks(md: string) {
 
   return floatLinks ?? [];
 }
-
-/**
- * リンクをレンダリングする
- */
-
-/**
- * リンクカード末尾にfavicon, ドメインを記載する
- */
-// export function getDomainFromUrl(url: string | undefined): string | undefined {
-//   if (!url) return undefined;
-
-//   let result;
-//   let match;
-
-//   match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?=]+)/im);
-//   if (match) {
-//     result = match[1];
-//     match = result.match(/^[^.]+\.(.+\..+)$/);
-
-//     if (match) {
-//       result = match[1];
-//     }
-//   }
-//   return result;
-// }
-
-/** OGP情報を取得 */
-// export function getOgpData(url: string) {
-//   return new Promise((resolve, reject) => {
-//     ogs({ url }).then((res) => {
-//       console.log('ogpの内部データ');
-//       const { result, error } = res;
-//       if (error) {
-//         resolve(error);
-//       } else {
-//         resolve(result);
-//       }
-//     });
-//   });
-// }
