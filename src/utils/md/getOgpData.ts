@@ -67,5 +67,7 @@ export function extractLinks(md: string) {
     /(?<!\()https?:\/\/[-_.!~*\\'()a-zA-Z0-9;\\/?:\\@&=+\\$,%#]+/g;
   const floatLinks = md.match(regFloatLink);
 
+  console.log('直書き', floatLinks);
+
   return floatLinks ?? [];
 }
