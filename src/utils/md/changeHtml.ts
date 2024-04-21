@@ -5,6 +5,7 @@ import MarkdownIt, { Token } from 'markdown-it';
 import StateInline from 'markdown-it/lib/rules_inline/state_inline';
 import { RuleInline } from 'markdown-it/lib/parser_inline';
 import { linkCard } from './linkCard';
+import { fileName } from './fileName';
 
 /**
  * マークダウンをhtmlに変換し、クラスをつけて返却する
@@ -89,6 +90,8 @@ export function changeHtml(markdown: string, ogpDatas?: any) {
   if (ogpDatas) {
     md.use(linkCard, ogpDatas);
   }
+
+  md.use(fileName);
 
   const result = md.render(markdown);
   return result;
