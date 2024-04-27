@@ -1,5 +1,6 @@
 import { NextPage, NextPageContext } from 'next';
 import Error from 'next/error';
+import * as Sentry from '@sentry/nextjs';
 
 interface ErrorPageProps {
   statusCode?: number;
@@ -13,8 +14,15 @@ const ErrorPage: NextPage<ErrorPageProps> = ({ statusCode }) => {
   );
 };
 
-ErrorPage.getInitialProps = ({ res, err }: NextPageContext) => {
+ErrorPage.getInitialProps = async (context: NextPageContext) => {
+  const { res, err } = context;
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+
+  if (err) {
+    // このページに来た例外をキャプチャ
+    await Sentry.captureUnderscoreErrorException(context);
+  }
+
   return { statusCode };
 };
 
