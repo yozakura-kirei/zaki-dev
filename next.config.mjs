@@ -52,9 +52,14 @@ export default withSentryConfig(
     project: process.env.SENTRY_PROJECT,
     authToken: process.env.SENTRY_AUTH_TOKEN,
 
-    // include: '.next',
-    // ignore: ['node_modules'],
-    // urlPrefix: '~/_next',
+    // ビルド成果物をSentryにアップロード
+    include: '.next',
+
+    // Sentryにアップロードしない
+    ignore: ['node_modules'],
+
+    // Sentryがエラーレポートで参照するファイルのURLを適切に特定できるようにする
+    urlPrefix: '~/_next',
   },
   {
     // For all available options, see:
