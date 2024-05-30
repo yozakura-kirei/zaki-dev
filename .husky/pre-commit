@@ -4,5 +4,5 @@
 npx lint-staged
 # npx next build
 # export NODE_ENV=production 
-npx next build
+# npx next build
 # npx cross-env NODE_ENV=production next build
