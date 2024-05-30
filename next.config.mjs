@@ -13,7 +13,6 @@ const nextConfig = {
     BASIC_PASSWORD: process.env.BASIC_PASSWORD,
     // sentry
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
-    SENTRY_DSN: process.env.SENTRY_DSN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
     SENTRY_ORG: process.env.SENTRY_ORG,
   },
