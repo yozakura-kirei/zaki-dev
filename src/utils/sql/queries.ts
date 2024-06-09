@@ -13,7 +13,7 @@ export const SQL = {
     ORDER BY \
       MAX(iac.created_at) DESC \
     LIMIT \
-      50;`,
+      10;`,
   // お知らせを取得
   selectNotices: `SELECT \
       t_n.id, t_n.notice_id, t_n.title, t_n.is_fixed, t_n.content, mcn.name, t_n.created_at, t_n.updated_at \
